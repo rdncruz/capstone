@@ -1,0 +1,10 @@
+.form form .error-text {
+    display: none;
+    color: #851923;
+    padding: 4px 6px;
+    text-align: center;
+    border-radius: 4px;
+    background: #ffe3e5;
+    border: 1px solid #dfa5ab;
+    margin-bottom: 8px;
+}
