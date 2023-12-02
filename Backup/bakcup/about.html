@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <section class="hero">
+        <div class="containser">
+            <div class="hero-content">
+                <h2>Efishing Supply</h2>
+                <p id="p1" class="elementToFadeInAndOut">E-Fishing Supply Shop Management Information System in Bataan is your all-in-one solution for fishing supply sellers and fisheries in the region. For fishing supply sellers, our system simplifies the process of keeping track of inventory, sales, and engaging with customers. It's like having a personal assistant for your business, making your day-to-day operations smoother and more efficient.</p>
+                <br>
+                <p id="p2" class="elementToFadeInAndOut">
+                Fisheries in Bataan also benefit from our platform as it streamlines the procurement of supplies and manages the supply chain effectively. Moreover, we're committed to promoting sustainable practices in the fishing industry, helping fisheries make eco-friendly choices.
+                </p>
+                <br>
+                <p id="p3" class="elementToFadeInAndOut">
+                What sets our system apart is that it's customized to fit your specific needs, ensuring it's a perfect match for your business. Plus, our team of experts is available round the clock to provide support and training, making sure you get the most out of the system. Together, we're building a stronger and more prosperous future for the fishing industry in Bataan, one that fosters efficiency and collaboration for both sellers and fisheries alike.
+                </p>
+                <button class="cta-button">Learn More</button>
+            </div>
+            <div class="hero-image">
+                <img src="image/Orange_Minimalist_Fishing_Logo.png" alt="">
+            </div>
+        </div>
+    </section>
+    <script>
+        const pElements = document.querySelectorAll('p');
+        let currentIndex = 0;
+
+        function displayNextP() {
+            pElements.forEach((p, index) => {
+                p.style.display = index === currentIndex ? 'block' : 'none';
+                p.classList.remove('fade');
+            });
+
+            currentIndex = (currentIndex + 1) % pElements.length;
+
+            pElements[currentIndex].classList.add('fade');
+        }
+
+        displayNextP();
+        setInterval(displayNextP, 5000); // Change the time interval (in milliseconds) as needed
+    </script>
+</body>
+</html>

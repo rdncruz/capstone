@@ -1,0 +1,94 @@
+* {
+    margin: 0px;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+}
+
+  
+.hero{
+  background-color: #f8f8f8;
+  overflow: hidden; 
+  border-radius: 25px;
+
+}
+.heading h1 {
+  color: #ff6347;
+  font-size: 55px;
+  text-align: center;
+  margin-top: 35px;
+}
+.containser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 65px auto;
+
+}
+.hero-content {
+  flex: 2;
+  width: 600px;
+  margin: 0px 25px;
+
+}
+.hero-content h2{
+  text-align: center;
+  font-size: 38px;
+  margin-bottom: 20px;
+  color: #333;
+  position: absolute; /* Set to absolute position */
+  top: 6%; /* Adjust top position as needed */
+  left: 0; /* Align with the left side of the container */
+  right: 25%; 
+}
+.hero-content p{ 
+  font-size: 24px;
+  line-height: 1.5;
+  margin-top: 40px;
+  color: #666;
+}
+.hero-content button {
+  display: inline-block;
+  background-color: #ff4500;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.hero-content button:hover {
+  background-color: #ff6347;
+  transform: scale(1.1);
+}
+.hero-image {
+  flex: 1;
+  width: 600px;
+  margin: auto;
+
+}
+
+img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.elementToFadeInAndOut {
+    -webkit-animation: fadeinout 8s linear forwards;
+    animation: fadeinout 8s linear forwards;
+}
+
+@-webkit-keyframes fadeinout {
+    0%, 10% { opacity: 0; }
+    20%, 80% { opacity: 1; }
+    80%, 100% { opacity: 0; }
+}
+
+@keyframes fadeinout {
+    0%, 10% { opacity: 0; }
+    20%, 80% { opacity: 1; }
+    80%, 100% { opacity: 0; }
+}

@@ -1,0 +1,274 @@
+<?php
+session_start();
+include 'php/config.php';
+
+if (!isset($_SESSION['unique_id'])) {
+   header("location: index.php");
+}
+
+$unique_id = $_SESSION['unique_id'];
+$ref_id = rand(time(), 100000000);
+    $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = '{$unique_id}'");
+    if (mysqli_num_rows($sql) > 0) {
+        $row = mysqli_fetch_assoc($sql);
+        if($row) {
+            $_SESSION['verification_status'] = $row ['verification_status'];
+            if ($row['role'] === 'user') {
+                if($row['verification_status'] != 'Verified') {
+                    header("Location: verify.php");
+                }
+            } 
+            else {
+                // Redirect to login.php if the user is not a seller
+                header("Location: index.php");
+            }
+        }
+    }
+
+if(isset($_POST['update_update_btn'])){
+   $update_value = $_POST['update_quantity'];
+   $update_id = $_POST['update_quantity_id'];
+   $update_quantity_query = mysqli_query($conn, "UPDATE `cart` SET quantity = '$update_value' WHERE id = '$update_id'");
+   if($update_quantity_query){
+      header('location:cart.php');
+   };
+};
+
+if(isset($_GET['remove'])){
+   $remove_id = $_GET['remove'];
+   mysqli_query($conn, "DELETE FROM `cart` WHERE id = '$remove_id'");
+   header('location:cart.php');
+};
+
+if(isset($_GET['delete_all'])){
+   mysqli_query($conn, "DELETE FROM `cart`");
+   header('location:cart.php');
+}
+
+
+
+if (isset($_POST['place_order_btn'])) {
+   $unique_id = $_SESSION['unique_id'];
+   
+   // Fix the SQL query and fetch the user data
+   $user_query = mysqli_query($conn, "SELECT * FROM `users` WHERE unique_id = '{$unique_id}'");
+   $user_data = mysqli_fetch_assoc($user_query);
+   $username = $user_data['username'];
+   $user_first_name = $user_data['fname'];
+   $user_last_name = $user_data['lname'];
+   $user_email = $user_data['email'];
+   $user_address = $user_data['address'];
+
+   $cart_query = mysqli_query($conn, "SELECT cart.*, products.name, products.price FROM `cart` INNER JOIN `products` ON cart.product_id = products.product_id WHERE cart.unique_id = '{$unique_id}'");
+    
+    $price_total = 0;
+    $product_ids = [];
+
+    if (mysqli_num_rows($cart_query) > 0) {
+        while ($product_item = mysqli_fetch_assoc($cart_query)) {
+            $product_name[] = $product_item['name'] . ' (' . $product_item['quantity'] . ') ' . ('</br>');
+            $product_price = $product_item['price'] * $product_item['quantity']; // Calculate total price for each product
+            $price_total += $product_price;
+            $product_ids[] = $product_item['product_id'];
+            
+        }   
+    }
+
+    $total_product = implode($product_name);
+    $ref_id = rand(time(), 100000000);
+   if ($cart_query) {
+      echo "
+      <div class='order-message-container'>
+          <div class='message-container'>
+              <h3>Confirm Your Order!</h3>
+              <h4>Reference Number: ".$ref_id."</h4>
+              <div class='order-detail'>
+                  <span>" . $total_product . "</span>
+                  <span class='total'>Total: P " . $price_total . "</span>
+              </div>
+              <div class='customer-details'>
+                   <p>Username: <span>" . $username . "</span></p>
+                  <p>Name: <span>" . $user_first_name . " " . $user_last_name . "</span></p>
+                  <p>Your email: <span>" . $user_email . "</span></p>
+                  <p>Your address: <span>" . $user_address . "</span></p>
+                  <p>(*Pay when the product arrives*)</p>
+              </div>
+              <a href='cart.php' class='btn'>Go back to the cart</a>
+              <form method='post' action=''>
+              <input type='submit' value='Order Now' name='order_btn' class='btn'>
+          </form>
+          </div>
+      </div>
+      ";
+  }
+}
+
+
+
+if (isset($_POST['order_btn'])) {
+    $unique_id = $_SESSION['unique_id'];
+   
+    // Fix the SQL query and fetch the user data
+    $user_query = mysqli_query($conn, "SELECT * FROM `users` WHERE unique_id = '{$unique_id}'");
+    $user_data = mysqli_fetch_assoc($user_query);
+    $username = $user_data['username'];
+    $user_first_name = $user_data['fname'];
+    $user_last_name = $user_data['lname'];
+    $fullname = $user_first_name . ''.$user_last_name.'';
+    $user_email = $user_data['email'];
+    $user_address = $user_data['address'];
+    $quantity = ['quantity'];
+    $current_date = date('Y-m-d');
+
+    $cart_query = mysqli_query($conn, "SELECT cart.*, products.name, products.price FROM `cart` INNER JOIN `products` ON cart.product_id = products.product_id WHERE cart.unique_id = '{$unique_id}'");
+    
+    $price_total = 0;
+   
+
+    if (mysqli_num_rows($cart_query) > 0) {
+        while ($product_item = mysqli_fetch_assoc($cart_query)) {
+            $product_name[] = $product_item['name'] . ' (' . $product_item['quantity'] . ') ';
+            $product_price = $product_item['price'] * $product_item['quantity']; // Calculate total price for each product
+            $price_total += $product_price;
+            $product_ids[] = $product_item['product_id'];
+            $quantity = $product_item['quantity'];
+            
+        }   
+    }
+
+    $total_product = implode(', ', $product_name);
+    
+    $product_ids_str = implode(', ', $product_ids);
+    foreach ($product_ids as $product_id) {
+      // Check if the product_id already exists in the checkout table
+
+          $detail_query = mysqli_query($conn, "INSERT INTO `checkout` (checkout_id, unique_id, product_id, name, username, quantity, price, order_date, status) VALUES ('$ref_id', '$unique_id', '$product_id', '$fullname', '$username', '$quantity', '$price_total', '$current_date', 'pending')") or die('query failed: ' . mysqli_error($conn));
+      
+  }
+    $delete_cart_query = mysqli_query($conn, "DELETE FROM `cart` WHERE unique_id = '$unique_id' AND product_id IN ($product_ids_str)");
+
+    if ($cart_query && $detail_query) {
+        echo "
+        <div class='order-message-container'>
+            <div class='message-container'>
+                <h3>Order has been Confirm!</h3>
+                <h4>Reference Number: ".$ref_id."</h4>
+                <div class='order-detail'>
+                    <span>" . $total_product . "</span>
+                    <span class='total'>Total: P " . $price_total . "</span>
+                </div>
+                <div class='customer-details'>
+                     <p>Username: <span>" . $username . "</span></p>
+                    <p>Name: <span>" . $fullname . "</span></p>
+                    <p>Your email: <span>" . $user_email . "</span></p>
+                    <p>Your address: <span>" . $user_address . "</span></p>
+                    <p>(*Pay when the product arrives*)</p>
+                    <p>(*The product in cart will automatically Remove*)</p>
+                </div>
+                <a href='store.php' class='btn'>Go back to Shopping</a>
+            </div>
+        </div>
+        ";
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>shopping cart</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="shopping.css">
+
+</head>
+<body>
+
+<?php include 'header.php'; ?>
+
+<div class="container">
+
+<section class="shopping-cart">
+
+   <h1 class="heading">shopping cart</h1>
+
+   <table>
+
+      <thead>
+         <th>image</th>
+         <th>name</th>
+         <th>price</th>
+         <th>quantity</th>
+         <th>total price</th>
+         <th>action</th>
+      </thead>
+
+      <tbody>
+
+         <?php 
+         $unique_id = $_SESSION['unique_id'];
+         $select_cart = mysqli_query($conn, "SELECT cart.*, products.product_id, products.name, products.price, products.image FROM `cart` INNER JOIN `products` ON cart.product_id = products.product_id WHERE cart.unique_id = '{$unique_id}'" );
+
+
+         $grand_total = 0;
+         if(mysqli_num_rows($select_cart) > 0){
+            while($fetch_cart = mysqli_fetch_assoc($select_cart)){
+         ?>
+
+         <tr>
+            <td><img src="uploaded_img/<?php echo $fetch_cart['image']; ?>" height="100" alt=""></td>
+            <td><?php echo $fetch_cart['name']; ?></td>
+            <td>P<?php echo number_format($fetch_cart['price']); ?></td>
+            <td>
+               <form action="" method="post">
+                  <input type="hidden" name="update_quantity_id"  value="<?php echo $fetch_cart['id']; ?>" >
+                  <input type="number" name="update_quantity" min="1"  value="<?php echo $fetch_cart['quantity']; ?>" >
+                  <input type="submit" value="update" name="update_update_btn">
+               </form>   
+            </td>
+            <td>P<?php echo $sub_total = $fetch_cart['price'] * $fetch_cart['quantity']; ?></td>
+
+            <td><a href="cart.php?remove=<?php echo $fetch_cart['id']; ?>" onclick="return confirm('remove item from cart?')" class="delete-btn"> <i class="fas fa-trash"></i> remove</a></td>
+         </tr>
+         <?php
+           $grand_total += $sub_total;  
+            };
+         }
+         else {
+            echo $grand_total;
+         };
+            ?>
+         
+         <tr class="table-bottom">
+            <td><a href="store.php" class="btn <?= ($grand_total > 1)?'':'disabled'; ?>">Go back shopping</a></td>
+            <td colspan="3">grand total</td>
+            <td>P<?php echo $grand_total; ?></td>
+            <td><a href="cart.php?delete_all" onclick="return confirm('are you sure you want to delete all?');" class="delete-btn"> <i class="fas fa-trash"></i> delete all </a></td>
+         </tr>
+
+      </tbody>
+
+   </table>
+   <form action="" method="post">
+   <div class="checkout-btn">
+   <input type="submit" value="order now" name="place_order_btn" class="btn">
+   </div>
+   </form>
+
+</section>
+
+</div>
+   
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
+
+</body>
+</html>
