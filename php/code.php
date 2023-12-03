@@ -32,7 +32,7 @@ if(isset($_POST['save_student'])) {
     $extensions = ['png', 'jpeg', 'jpg']; // Valid image extensions
 
     if (in_array($img_extension, $extensions)) {
-        $destination = "../image/".$img_name; // Specify the correct destination directory
+        $destination = "../image/" . $img_name; // Specify the correct destination directory
         
         if (move_uploaded_file($tmp_name, $destination)) {
             // Image uploaded successfully, now insert data into the database
