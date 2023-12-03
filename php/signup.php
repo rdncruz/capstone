@@ -24,7 +24,7 @@
     if($userType === 'admin') {
         if(!empty($username) && !empty($email) && !empty($password)) {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $sql = mysqli_query($conn, "SELECT * FROM users WHERE username = '{$username}'");
+                $sql = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
                 if(mysqli_num_rows($sql) > 0) {
                     echo "$username - This username already exist!";
                 } else {
@@ -49,7 +49,7 @@
     } else {
         if(!empty($fname) && !empty($lname) && !empty($email) && !empty($password) && !empty($username)){
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $sql = mysqli_query($conn, "SELECT * FROM users WHERE email = '{$email}'");
+                $sql = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
                 if(mysqli_num_rows($sql) > 0){
                     echo "$email - This email already exist!";
     
@@ -77,8 +77,8 @@
                                         $time = time();
                                         $newimgname = $time . $img_name; //creating a unique name for the image
                                        
-                                        echo $tmp_name,__DIR__."image/".$newimgname;
-                                        if(move_uploaded_file($tmp_name,"./image/".$newimgname)){ //set the uploaded file storage folder
+                                        //echo $tmp_name,__DIR__."image/".$newimgname;
+                                        if(move_uploaded_file($tmp_name,"../image/".$newimgname)){ //set the uploaded file storage folder
                                             $ran_id = rand(time(), 100000000); //create a unique user id
                                             $otp = mt_rand(1111, 9999); //creating 4 digits otp
 
