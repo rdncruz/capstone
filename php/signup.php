@@ -55,7 +55,7 @@
     
                 } 
                 else {
-                    $sql = mysqli_query($conn, "SELECT * FROM users WHERE username = '{$username}'");
+                    $sql = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
                     if(mysqli_num_rows($sql) > 0){ 
                         echo "$username - This username already exist!";
                     }
