@@ -77,7 +77,7 @@
                                         $time = time();
                                         $newimgname = $time . $img_name; //creating a unique name for the image
                                        
-                                        // echo $tmp_name,__DIR__."image/".$newimgname;
+                                        echo $tmp_name,__DIR__."image/".$newimgname;
                                         if(move_uploaded_file($tmp_name,"./image/".$newimgname)){ //set the uploaded file storage folder
                                             $ran_id = rand(time(), 100000000); //create a unique user id
                                             $otp = mt_rand(1111, 9999); //creating 4 digits otp
