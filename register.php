@@ -19,7 +19,7 @@
             <form action="#" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <div class="error-text"></div>
                 <div class="name-details">
-                <input type="hidden" name="shop_name" value="Null">
+                <input type="hidden" name="shop_name">
                 <?php
                     if (isset($_POST["address"]))
                     {

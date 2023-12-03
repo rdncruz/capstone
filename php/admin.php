@@ -1,10 +1,6 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;   
-session_start();
 require 'config.php';
-require '../vendor/autoload.php';
+
 if (isset($_POST['unique_id']) && isset($_POST['action'])) {
     $unique_id = mysqli_real_escape_string($conn, $_POST['unique_id']);
     $action = $_POST['action'];
@@ -47,49 +43,9 @@ if (isset($_POST['unique_id']) && isset($_POST['action'])) {
                     $email = $row['email'];
 
                     // Send the approval email with OTP
-                    $reciever = $email;
-                                                                
-                                                                $mail = new PHPMailer(true);
-                                                                try {
-                                                                    //Server settings
-                                                                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                                                                    $mail->isSMTP();                                            //Send using SMTP
-                                                                    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-                                                                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                                                                    $mail->Username   = 'crenzxdaryl@gmail.com';                     //SMTP username
-                                                                    $mail->Password   = 'hhsk nebo abfn muqk';                               //SMTP password
-                                                                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-                                                                    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-                                                                
-                                                                    //Recipients
-                                                                    $mail->setFrom('crenzdaryl@gmail.com', 'Efishing');
-                                                                    $mail->addAddress($email);     //Add a recipient
-                                                                
-                                                                
-                                                                    //Attachments
-                                                                
-                                                                
-                                                                    //Content
-                                                                    $mail->isHTML(true);                                  //Set email format to HTML
-                                                                    $mail->Subject = 'Efishing Account Verification';
-                                                                    $mail->Body    = 'OTP Verication Code: '. $otp;
-                                                               
-                                                                
-                                                                    $mail->send();
-                                                                    if (mail($email, $subject, $message, $headers)) {
-                        $response = [
-                            'status' => 'success',
-                            'message' => 'Seller approved successfully and email sent'
-                        ];
-                    } else {
-                        $response = [
-                            'status' => 'error',
-                            'message' => 'Failed to send approval email'
-                        ];
-                    }
-                                                                } catch (Exception $e) {
-                                                                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                                                                }
+                    $subject = "Your Seller Account is Approved";
+                    $message = "Congratulations! Your seller account has been approved. Your OTP is: $otp";
+                    $headers = "From: your_email@example.com"; // Change this to your email address
 
                     if (mail($email, $subject, $message, $headers)) {
                         $response = [
