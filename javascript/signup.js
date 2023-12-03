@@ -27,7 +27,10 @@ continueBtn.onclick = () => {
                 location.href = './seller_login.php';
               });
             } else if (userType === 'admin') {
-              location.href = './admin_portal.php';
+              
+                location.href = './admin.php';
+           
+              
             }
           } else {
             errorText.style.display = "block";
