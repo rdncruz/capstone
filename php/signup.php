@@ -1,8 +1,8 @@
-<?php
-   use PHPMailer\PHPMailer\PHPMailer;
-   use PHPMailer\PHPMailer\SMTP;
-   use PHPMailer\PHPMailer\Exception;   
+<?php 
     session_start();
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;  
     include_once "config.php";
     require '../vendor/autoload.php';
     $fname = mysqli_real_escape_string($conn, $_POST['fname']);
@@ -20,37 +20,33 @@
     $verification_status = 'Not Verified';
     $status = "Offline";
     $ran_id = 0;
-
     $userType = isset($_POST['user_type']) ? $_POST['user_type'] : 'user';
-    if ($userType === 'admin') {
+    if($userType === 'admin') {
         if(!empty($username) && !empty($email) && !empty($password)) {
-            if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $sql = mysqli_query($conn, "SELECT * FROM users WHERE username = '{$username}'");
-                if(mysqli_num_rows($sql) > 0){
+                if(mysqli_num_rows($sql) > 0) {
                     echo "$username - This username already exist!";
-    
-                } 
-                else { 
-                    // For admin, generate a unique ID
-                    $ran_id = rand(time(), 100000000); // Create a unique user ID
-                
-                    // Insert admin data into the database
-                    $insert_query = mysqli_query($conn, "INSERT INTO $userType (unique_id, email, username, password, status)
-                    VALUES ({$ran_id}, '{$email}', '{$username}', '{$encrypt_pass}', '{$status}')");
-                
-                    if ($insert_query) {
+                } else {
+                    //Admin username is not exist
+                    $ran_id = rand(time(), 100000000); //Generate Admin ID
+                    $query =  "INSERT INTO users (unique_id, email, username, password, status)  VALUES ($ran_id, '$email', '$username', '$encrypt_pass', '$status')";
+                    //Insert admin Data
+                    $insert_query = mysqli_query($conn, $query);
+                 
+                    if($insert_query) {
                         echo "success";
                     } else {
                         echo "Error: " . mysqli_error($conn); // Output the specific error message
                     }
                 }
             } else {
-                echo "Invalid Email";
+                //Admin Email not valid
             }
         } else {
-            echo "All Field are required";
+            // If the field is empty in User Admin
         }
-    } else { 
+    } else {
         if(!empty($fname) && !empty($lname) && !empty($email) && !empty($password) && !empty($username)){
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                 $sql = mysqli_query($conn, "SELECT * FROM users WHERE email = '{$email}'");
@@ -70,6 +66,7 @@
                                 $img_name = $_FILES['image']['name']; //getting image name
                                 $img_type = $_FILES['image']['type']; //getting image type
                                 $tmp_name = $_FILES['image']['tmp_name'];            
+
                                 $img_explode = explode('.',$img_name);
                                 $img_ext = end($img_explode);
                                 $extensions = ["jpeg", "png", "jpg"]; //these are some valid image extensions
@@ -78,21 +75,24 @@
                                     $types = ["image/jpeg", "image/jpg", "image/png"];
                                     if(in_array($img_type, $types) === true){
                                         $time = time();
-                                        $new_img_name = $time.$img_name; //creating a unique name for the image
-                                        if(move_uploaded_file($tmp_name,"../image/".$new_img_name)){ //set the uploaded file storage folder
+                                        $newimgname = $time . $img_name; //creating a unique name for the image
+                                       
+                                        // echo $tmp_name,__DIR__."image/".$newimgname;
+                                        if(move_uploaded_file($tmp_name,"../image/".$newimgname)){ //set the uploaded file storage folder
                                             $ran_id = rand(time(), 100000000); //create a unique user id
                                             $otp = mt_rand(1111, 9999); //creating 4 digits otp
 
                                             // Insert data into Table
-                                            $insert_query = mysqli_query($conn, "INSERT INTO users (unique_id, username, fname, lname, address, email, password, img, otp, status, role, shop_name, verification_status)
-                                            VALUES ({$ran_id},'{$username}', '{$fname}','{$lname}', '{$address}', '{$email}', '{$encrypt_pass}', '{$new_img_name}', '{$otp}', '{$status}', '{$userType}', '{$shop_name}', '{$verification_status}')");
-            
+                                            $query =  "INSERT INTO users (unique_id, username, fname, lname, address, email, password, img, otp, status, role, shop_name, verification_status)  VALUES ($ran_id, '$username', '$fname', '$lname', '$address', '$email', '$encrypt_pass', '$new_img_name', $otp, '$status', '$userType', '$shop_name', '$verification_status')";
+                                            //Insert admin Data
+                                            // echo $query;
+                                            
+                                            $insert_query = mysqli_query($conn, $query);
                                             if($insert_query){
-                                                $insert_location_query = mysqli_query($conn, "INSERT INTO location (unique_id, lat, lng) 
-                                                VALUES ({$ran_id}, '{$lat}', '{$lng}')");
+                                                $insert_location_query = mysqli_query($conn, "INSERT INTO location (unique_id, lat, lng) VALUES ($ran_id, '$lat', '$lng')");
 
                                                 if($insert_location_query){ 
-                                                    $select_sql2 = mysqli_query($conn, "SELECT * FROM users WHERE email = '{$email}'");
+                                                    $select_sql2 = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
                                                     if(mysqli_num_rows($select_sql2) > 0){
                                                         $result = mysqli_fetch_assoc($select_sql2);
                                                         $_SESSION['unique_id'] = $result['unique_id'];
@@ -154,6 +154,8 @@
                                             else {
                                                 echo "Something went wrong. Please try again!";
                                             }
+                                        } else {
+                                            echo "File upload failed: ";
                                         }
                                     }
                                     else {
@@ -178,8 +180,5 @@
         else {
             echo "All input fields are required!";
         }
-
     }
-        
-    
 ?>
