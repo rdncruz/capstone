@@ -1,132 +1,41 @@
-<?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;   
-session_start();
-require 'config.php';
-require '../vendor/autoload.php';
-if (isset($_POST['unique_id']) && isset($_POST['action'])) {
-    $unique_id = mysqli_real_escape_string($conn, $_POST['unique_id']);
-    $action = $_POST['action'];
 
-    if ($action === 'reject') {
-        // Perform the reject operation in your database
-        $query = "DELETE FROM users WHERE unique_id = '$unique_id'";
-        $result = mysqli_query($conn, $query);
-
-        if ($result) {
-            // Seller rejected successfully
-            $response = [
-                'status' => 'success',
-                'message' => 'Seller rejected successfully'
-            ];
-        } else {
-            // Error occurred while rejecting seller
-            $response = [
-                'status' => 'error',
-                'message' => 'Failed to reject seller'
-            ];
-        }
-    } elseif ($action === 'approve') {
-        // Perform the approval operation in your database
-            // Seller approved successfully
-            // Retrieve the OTP from the database
-            $otpQuery = "SELECT otp FROM users WHERE unique_id = '$unique_id'";
-            $otpResult = mysqli_query($conn, $otpQuery);
-
-            if ($otpResult && mysqli_num_rows($otpResult) > 0) {
-                $row = mysqli_fetch_assoc($otpResult);
-                $otp = $row['otp'];
-
-                // Retrieve the email address of the seller
-                $emailQuery = "SELECT email FROM users WHERE unique_id = '$unique_id'";
-                $emailResult = mysqli_query($conn, $emailQuery);
-
-                if ($emailResult && mysqli_num_rows($emailResult) > 0) {
-                    $row = mysqli_fetch_assoc($emailResult);
-                    $email = $row['email'];
-
-                    // Send the approval email with OTP
-                    $reciever = $email;
-                                                                
-                                                                $mail = new PHPMailer(true);
-                                                                try {
-                                                                    //Server settings
-                                                                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                                                                    $mail->isSMTP();                                            //Send using SMTP
-                                                                    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-                                                                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                                                                    $mail->Username   = 'crenzxdaryl@gmail.com';                     //SMTP username
-                                                                    $mail->Password   = 'hhsk nebo abfn muqk';                               //SMTP password
-                                                                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-                                                                    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-                                                                
-                                                                    //Recipients
-                                                                    $mail->setFrom('crenzdaryl@gmail.com', 'Efishing');
-                                                                    $mail->addAddress($email);     //Add a recipient
-                                                                
-                                                                
-                                                                    //Attachments
-                                                                
-                                                                
-                                                                    //Content
-                                                                    $mail->isHTML(true);                                  //Set email format to HTML
-                                                                    $mail->Subject = 'Efishing Account Verification';
-                                                                    $mail->Body    = 'OTP Verication Code: '. $otp;
-                                                               
-                                                                
-                                                                    $mail->send();
-                                                                    if (mail($email, $subject, $message, $headers)) {
-                        $response = [
-                            'status' => 'success',
-                            'message' => 'Seller approved successfully and email sent'
-                        ];
-                    } else {
-                        $response = [
-                            'status' => 'error',
-                            'message' => 'Failed to send approval email'
-                        ];
-                    }
-                                                                } catch (Exception $e) {
-                                                                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                                                                }
-
-                    if (mail($email, $subject, $message, $headers)) {
-                        $response = [
-                            'status' => 'success',
-                            'message' => 'Seller approved successfully and email sent'
-                        ];
-                    } else {
-                        $response = [
-                            'status' => 'error',
-                            'message' => 'Failed to send approval email'
-                        ];
-                    }
-                } else {
-                    $response = [
-                        'status' => 'error',
-                        'message' => 'Failed to retrieve seller email'
-                    ];
-                }
-            } else {
-                $response = [
-                    'status' => 'error',
-                    'message' => 'Failed to retrieve OTP'
-                ];
-            }
-        } else {
-            // Error occurred while approving seller
-            $response = [
-                'status' => 'error',
-                'message' => 'Failed to approve seller'
-            ];
-        }
-    } else {
-        // Invalid action
-        $response = [
-            'status' => 'error',
-            'message' => 'Invalid action'
-        ];
-    }
-echo json_encode($response);
-?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Admin</title>
+    <link rel="stylesheet" href="css/logreg.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body data-user-type="admin">
+    <div class="wrapper">
+        <section class="form login">
+            <header>Administrator</header>
+            <form action="#" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <div class="error-text"></div>
+                <input type="hidden" name="email">
+                <div class="field input">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="field input">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Enter your password" required>
+                    <i class="fas fa-eye"></i>
+                </div>
+                <input type="radio" name="user_type" id="admin" value="admin" style="display: none;" checked>
+                <div class="field button">
+                    <input type="submit" name="submit" value="Login">
+                </div>
+            </form>
+        </section>
+    </div>
+<script src="javascript/pass-show-hide.js"></script>
+<script src="javascript/login.js"></script>
+</body>
+</html>
