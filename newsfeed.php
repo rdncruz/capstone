@@ -123,7 +123,7 @@
           
           
          
-          <?php
+        <?php
 // Assuming you have established a database connection
 
 // Fetch post details from the database (replace with your actual SQL query)
@@ -132,38 +132,47 @@ $result = mysqli_query($conn, $sql);
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($post = mysqli_fetch_assoc($result)) {
+        // Fetch user details based on the unique_id from the post
+        $user_id = $post['unique_id'];
+        $user_query = "SELECT * FROM users WHERE unique_id = $user_id";
+        $user_result = mysqli_query($conn, $user_query);
+
+        if ($user_result && $user = mysqli_fetch_assoc($user_result)) {
 ?>
-        <div class="card post">
-            <div class="post-header">
-                <div class="post-author-info">
-                    <img src="./image/<?php echo $row['img']?>" />
-                    <div>
+            <div class="card post">
+                <div class="post-header">
+                    <div class="post-author-info">
+                        <img src="./image/<?php echo $user['img']; ?>" />
                         <div>
-                            <span class="author-name"><?php echo $post['username']; ?></span>
-                            <i class="verified-icon"></i>
-                        </div>
-                        <div class="details">
-                            <span><?php echo $post['date']; ?></span>
-                            <span> · </span>
-                            <i class="post-settings-icon"></i>
+                            <div>
+                                <span class="author-name"><?php echo $post['username']; ?></span>
+                                <i class="verified-icon"></i>
+                            </div>
+                            <div class="details">
+                                <span><?php echo $post['date']; ?></span>
+                                <span> · </span>
+                                <i class="post-settings-icon"></i>
+                            </div>
                         </div>
                     </div>
+                    <i class="post-menu-icon"></i>
                 </div>
-                <i class="post-menu-icon"></i>
+                <p class="post-body"><?php echo $post['content']; ?></p>
+                <a class="post-image">
+                    <img src="./image/<?php echo $post['img']; ?>" />
+                    <div class="excerpt">
+                        <!-- Add additional details as needed -->
+                        <div class="post-info-icon-wrap">
+                            <i class="post-info-icon"></i>
+                        </div>
+                    </div>
+                </a>
+                <!-- Rest of the HTML code remains unchanged -->
             </div>
-            <p class="post-body"><?php echo $post['content']; ?></p>
-            <a class="post-image">
-                <img src="./image/<?php echo $post['img']; ?>" />
-                <div class="excerpt">
-                    <!-- Add additional details as needed -->
-                    <div class="post-info-icon-wrap">
-                        <i class="post-info-icon"></i>
-                    </div>
-                </div>
-            </a>
-            <!-- Rest of the HTML code remains unchanged -->
-        </div>
 <?php
+        } else {
+            echo "Error fetching user details: " . mysqli_error($conn);
+        }
     }
 } else {
     echo "No posts found.";
