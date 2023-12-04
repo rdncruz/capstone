@@ -41,7 +41,7 @@ if(isset($_GET['product_id'])) {
     $product_id = mysqli_real_escape_string($conn, $_GET['product_id']);
 
     // Retrieve product details from the database
-    $select_product = mysqli_query($conn, "SELECT * FROM products WHERE id = '$product_id'");
+    $select_product = mysqli_query($conn, "SELECT * FROM products WHERE product_id = '$product_id'");
 
     if(mysqli_num_rows($select_product) > 0) {
         $fetch_product = mysqli_fetch_assoc($select_product);
