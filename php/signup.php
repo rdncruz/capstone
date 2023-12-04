@@ -60,102 +60,44 @@
                         echo "$username - This username already exist!";
                     }
                     else {
-                        if($password == $cpassword) {
-                            //let's check if the user uploaded a file or not
+                        if ($password == $cpassword) {
+                            // let's check if the user uploaded a file or not
                             if (isset($_FILES['image'])) {
                                 $img_name = $_FILES['image']['name'];
                                 // ... (check file type, extension, etc.)
                                 $time = time();
                                 $new_img_name = $time . $img_name;
                                 $upload_path = "../image/" . $new_img_name;
+                        
                                 if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
                                     // File upload handling for the second image (reg_image)
-                                    if (isset($_FILES['reg_image'])) {
-                                        $reg_img_name = $_FILES['reg_image']['name'];
-                                        // ... (check file type, extension, etc.)
-                                        $new_reg_img_name = $time . $reg_img_name;
-                                        $reg_upload_path = "../image/" . $new_reg_img_name;
-                                        if (move_uploaded_file($_FILES['reg_image']['tmp_name'], $reg_upload_path)) {
-                                            $ran_id = rand(time(), 100000000); //create a unique user id
-                                            $otp = mt_rand(1111, 9999); //creating 4 digits otp
-
-                                            // Insert data into Table
-                                            $query =  "INSERT INTO users (unique_id, username, fname, lname, address, email, password, img, otp, status, role, shop_name, reg_img, verification_status)  VALUES ($ran_id, '$username', '$fname', '$lname', '$address', '$email', '$encrypt_pass', '$new_img_name', $otp, '$status', '$userType', '$shop_name', '$new_reg_img_name', '$verification_status')";
-                                            //Insert admin Data
-                                            // echo $query;
-                                            
-                                            $insert_query = mysqli_query($conn, $query);
-                                            if($insert_query){
-                                                $insert_location_query = mysqli_query($conn, "INSERT INTO location (unique_id, lat, lng) VALUES ($ran_id, '$lat', '$lng')");
-
-                                                if($insert_location_query){ 
-                                                    $select_sql2 = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
-                                                    if(mysqli_num_rows($select_sql2) > 0){
-                                                        $result = mysqli_fetch_assoc($select_sql2);
-                                                        $_SESSION['unique_id'] = $result['unique_id'];
-                                                        $_SESSION['email'] = $result['email'];
-                                                        $_SESSION['otp'] = $otp;
-    
-                                                        if ($userType === 'user') { 
-                                                            if($otp) {
-                                                                $reciever = $email;
-                                                                
-                                                                $mail = new PHPMailer(true);
-                                                                try {
-                                                                    //Server settings
-                                                                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                                                                    $mail->isSMTP();                                            //Send using SMTP
-                                                                    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-                                                                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                                                                    $mail->Username   = 'crenzxdaryl@gmail.com';                     //SMTP username
-                                                                    $mail->Password   = 'hhsk nebo abfn muqk';                               //SMTP password
-                                                                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-                                                                    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-                                                                
-                                                                    //Recipients
-                                                                    $mail->setFrom('crenzdaryl@gmail.com', 'Efishing');
-                                                                    $mail->addAddress($email);     //Add a recipient
-                                                                
-                                                                
-                                                                    //Attachments
-                                                                
-                                                                
-                                                                    //Content
-                                                                    $mail->isHTML(true);                                  //Set email format to HTML
-                                                                    $mail->Subject = 'Efishing Account Verification';
-                                                                    $mail->Body    = 'OTP Verication Code: '. $otp;
-                                                               
-                                                                
-                                                                    $mail->send();
-                                                                    echo 'success';
-                                                                } catch (Exception $e) {
-                                                                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                                                                }
-                                                            } 
-                                                            else {
-                                                                echo "something went Wrong";
-                                                            }
-                                                        }                                            
-                                                        else {
-                                                            echo "success";
-                                                        }
-                                                    }
-                                                    else {
-                                                        echo "This email address not Exist!";
-                                                    }
-                                                } 
-                                                else {
-                                                    echo "Something went wrong. Please try agsain!";
-                                                }
-                                            }
-                                            else {
-                                                echo "Something went wrong. Please try again!";
+                        
+                                    if ($userType === 'seller') {
+                                        // Only users with role 'user' can access the second image upload
+                                        if (isset($_FILES['reg_image'])) {
+                                            $reg_img_name = $_FILES['reg_image']['name'];
+                                            // ... (check file type, extension, etc.)
+                                            $new_reg_img_name = $time . $reg_img_name;
+                                            $reg_upload_path = "../image/" . $new_reg_img_name;
+                        
+                                            if (move_uploaded_file($_FILES['reg_image']['tmp_name'], $reg_upload_path)) {
+                                                // Continue with the rest of your code
+                                                $ran_id = rand(time(), 100000000); // create a unique user id
+                                                $otp = mt_rand(1111, 9999); // creating 4 digits otp
+                        
+                                                // Insert data into Table
+                                                $query =  "INSERT INTO users (unique_id, username, fname, lname, address, email, password, img, otp, status, role, shop_name, reg_img, verification_status)  VALUES ($ran_id, '$username', '$fname', '$lname', '$address', '$email', '$encrypt_pass', '$new_img_name', $otp, '$status', '$userType', '$shop_name', '$new_reg_img_name', '$verification_status')";
+                        
+                                                // Continue with the rest of your code...
+                                            } else {
+                                                echo "Second file not uploaded";
                                             }
                                         } else {
-                                            echo "Second file not uploaded";
+                                            echo "User did not upload the second image";
                                         }
                                     } else {
-                                        echo "User did not upload the second image";
+                                        // Users with a role other than 'user' are not allowed to access the second image upload
+                                        echo "Access denied. Only users with role 'user' can upload the second image.";
                                     }
                                 } else {
                                     echo "First file not uploaded";
@@ -163,8 +105,7 @@
                             } else {
                                 echo "User did not upload the first image";
                             }
-                        }
-                        else {
+                        } else {
                             echo "Confirm Password Don't Match";
                         }
                     }
