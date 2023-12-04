@@ -78,8 +78,12 @@
                     
                 </div>
                 <div class="field image">
-                    <label>Certificate of Registration</label>
+                <label>Select Image</label>
                     <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg" required>
+                </div>
+                <div class="field image">
+                    <label>Certificate of Registration</label>
+                    <input type="file" name="reg_image" accept="image/x-png,image/gif,image/jpeg,image/jpg" required>
                 </div>
                 <div class="field button">
                     <input type="submit" name="submit" value="Register">
