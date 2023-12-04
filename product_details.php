@@ -217,7 +217,7 @@ if(isset($_GET['product_id'])) {
                                 <span class="offer-price">₱<?php echo $fetch_product['price']; ?></span>
                             </div>
                             <div class="product-detailss">
-                                <h3>Status <?php echo $fetch_product['Status']; ?> <h1><?php echo $fetch_product['quantity']; ?></h3>
+                                <h3>Status <?php echo $fetch_product['status']; ?> <h1><?php echo $fetch_product['quantity']; ?></h3>
                                 <h3>Description</h3>
                                 <p><?php echo $fetch_product['small_description']; ?></p>
                             </div>
