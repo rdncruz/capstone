@@ -220,7 +220,7 @@ if(isset($_POST['add_to_cart'])){
                             <div class="product-links">
                                 <button type="submit" class="fa fa-heart" name="add_to_cart">Add to cart <i class="fas fa-shopping-cart"></i></button>
 
-                                <a href="./product_details.php?product_id=<?php echo $fetch_product['id']; ?>" class="fa fa-shopping-cart" name="view">View Details <i class="fas fa-info-circle"></i></a>
+                                <a href="./product_details.php?product_id=<?php echo $fetch_product['product_id']; ?>" class="fa fa-shopping-cart" name="view">View Details <i class="fas fa-info-circle"></i></a>
                                 <input type="hidden" name="id" value=" ">
                             </div>
                         </div>
