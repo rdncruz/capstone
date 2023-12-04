@@ -55,6 +55,12 @@
                     <span class="text">Home</span>
                 </a>
             </li>
+            <li>
+                <a href="newsfeed.php">
+                    <i class='bx bx-home' ></i>
+                    <span class="text">Newsfeed</span>
+                </a>
+            </li>
             <li  class="active">
                 <a href="dashboard.php">
                     <i class='bx bx-home' ></i>

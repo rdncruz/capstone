@@ -58,7 +58,7 @@
                 </a>
             </li>
             <li  class="active">
-                <a href="userfeed.php">
+                <a href="newsfeed.php">
                     <i class='bx bx-home' ></i>
                     <span class="text">Newsfeed</span>
                 </a>

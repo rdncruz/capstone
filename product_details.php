@@ -104,6 +104,18 @@ if(isset($_GET['product_id'])) {
                 </a>
             </li>
             <li>
+                <a href="newsfeed.php">
+                    <i class='bx bx-home' ></i>
+                    <span class="text">Newsfeed</span>
+                </a>
+            </li>
+            <li>
+                <a href="dashboard.php">
+                    <i class='bx bx-home' ></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
                 <a href="inbox.php">
                     <i class='bx bx-conversation'></i>
                     <span class="text">Inbox</span>
