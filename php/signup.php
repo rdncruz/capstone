@@ -70,21 +70,13 @@
                                 $upload_path = "../image/" . $new_img_name;
                                 if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
                                     // File upload handling for the second image (reg_image)
-                                    if ($userType == "seller") {
-                                        if (isset($_FILES['reg_image'])) {
-                                            $reg_img_name = $_FILES['reg_image']['name'];
-                                            // ... (check file type, extension, etc.)
-                                            $new_reg_img_name = $time . $reg_img_name;
-                                            $reg_upload_path = "../image/" . $new_reg_img_name;
-                                            if (move_uploaded_file($_FILES['reg_image']['tmp_name'], $reg_upload_path)) {
-                                                } else {
-                                            echo "Second file not uploaded";
-                                            }
-                                        } else {
-                                            echo "User did not upload the second image";
-                                        }
-                                    } else {
-                                        $ran_id = rand(time(), 100000000); //create a unique user id
+                                    if (isset($_FILES['reg_image'])) {
+                                        $reg_img_name = $_FILES['reg_image']['name'];
+                                        // ... (check file type, extension, etc.)
+                                        $new_reg_img_name = $time . $reg_img_name;
+                                        $reg_upload_path = "../image/" . $new_reg_img_name;
+                                        if (move_uploaded_file($_FILES['reg_image']['tmp_name'], $reg_upload_path)) {
+                                            $ran_id = rand(time(), 100000000); //create a unique user id
                                             $otp = mt_rand(1111, 9999); //creating 4 digits otp
 
                                             // Insert data into Table
@@ -159,8 +151,12 @@
                                             else {
                                                 echo "Something went wrong. Please try again!";
                                             }
+                                        } else {
+                                            echo "Second file not uploaded";
+                                        }
+                                    } else {
+                                        echo "User did not upload the second image";
                                     }
-                                        
                                 } else {
                                     echo "First file not uploaded";
                                 }
