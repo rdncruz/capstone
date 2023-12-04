@@ -83,7 +83,7 @@
                                             $otp = mt_rand(1111, 9999); //creating 4 digits otp
 
                                             // Insert data into Table
-                                            $query =  "INSERT INTO users (unique_id, username, fname, lname, address, email, password, img, otp, status, role, shop_name, verification_status)  VALUES ($ran_id, '$username', '$fname', '$lname', '$address', '$email', '$encrypt_pass', '$new_img_name', $otp, '$status', '$userType', '$shop_name', '$verification_status')";
+                                            $query =  "INSERT INTO users (unique_id, username, fname, lname, address, email, password, img, otp, status, role, shop_name, verification_status)  VALUES ($ran_id, '$username', '$fname', '$lname', '$address', '$email', '$encrypt_pass', '$newimgname', $otp, '$status', '$userType', '$shop_name', '$verification_status')";
                                             //Insert admin Data
                                             // echo $query;
                                             
