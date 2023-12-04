@@ -122,38 +122,90 @@
 			</a>
 		</nav>
         <main>
-        <div class="newsfeed">
-      <div class="wrapper">
-        <section class="post">
-          <header>Create Post</header>
-          <form action="#">
-            <div class="content">
-              <img src="icons/logo.png" alt="logo">
-              <div class="details">
-                <p>CodingNepal</p>
-                <div class="privacy">
-                  <i class="fas fa-user-friends"></i>
-                  <span>Users</span>
-                  <i class="fas fa-caret-down"></i>
+        <main>
+          <div class="newsfeed">
+            <div class="wrapper">
+              <section class="post">
+                <header>Create Post</header>
+                <form id="postForm" action="php/add_post.php" method="POST" enctype="multipart/form-data">
+
+                  <div class="content">
+                  <img src="./image/<?php echo $row['img']; ?>" alt="">
+                    <div class="details">
+                      <p><?php echo $row['shop_name']?></p>
+                      
+                    </div>
+                  </div>
+                  <textarea placeholder="What's on your mind, <?php echo $row['shop_name']?>" spellcheck="false" name="content" required ></textarea>
+                  <div class="options">
+                    <p>Add to Your Post</p>
+                    <ul class="list">
+                    
+                    <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg" required>
+
+                    </ul>
+                  </div>
+                  <input type="hidden" name="username" value="<?php echo $row['username']; ?>">
+                  <input type="hidden" name="user_id" value="<?php echo $row['unique_id']; ?>">
+                  <button type="submit" name="add_to_newsfeed"> Post</button>
+                </form>
+              </section>
+            </div>
+          </div>
+          
+         
+          <?php
+// Assuming you have established a database connection
+
+// Fetch post details from the database (replace with your actual SQL query)
+$sql = "SELECT * FROM posting"; // Modify the query accordingly
+$result = mysqli_query($conn, $sql);
+
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($post = mysqli_fetch_assoc($result)) {
+?>
+        <div class="card post">
+            <div class="post-header">
+                <div class="post-author-info">
+                    <img src="./image/<?php echo $row['img']?>" />
+                    <div>
+                        <div>
+                            <span class="author-name"><?php echo $post['username']; ?></span>
+                            <i class="verified-icon"></i>
+                        </div>
+                        <div class="details">
+                            <span><?php echo $post['date']; ?></span>
+                            <span> · </span>
+                            <i class="post-settings-icon"></i>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <i class="post-menu-icon"></i>
             </div>
-            <textarea placeholder="What's on your mind, CodingNepal?" spellcheck="false" required></textarea>
+            <p class="post-body"><?php echo $post['content']; ?></p>
+            <a class="post-image">
+                <img src="./image/<?php echo $post['img']; ?>" />
+                <div class="excerpt">
+                    <!-- Add additional details as needed -->
+                    <div class="post-info-icon-wrap">
+                        <i class="post-info-icon"></i>
+                    </div>
+                </div>
+            </a>
+            <!-- Rest of the HTML code remains unchanged -->
+        </div>
+<?php
+    }
+} else {
+    echo "No posts found.";
+}
 
-            <div class="options">
-              <p>Add to Your Post</p>
-              <ul class="list">
-                <li><img src="icons/gallery.svg" alt="gallery"></li>
-              </ul>
-            </div>
-            <button>Post</button>
-          </form>
-        </section>
-        
-      </div>
-    </div>
+// Close the database connection
+mysqli_close($conn);
+?>
 
-   
+      
+
         </main>
     </section>
 	<script src="javascript/design.js"></script>
