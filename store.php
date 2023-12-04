@@ -29,6 +29,27 @@ if (mysqli_num_rows($sql) > 0) {
         }
     }
 }
+function getAverageRating($conn, $product_id) {
+    $query = "SELECT AVG(rating) as avg_rating, COUNT(unique_id) as review_count FROM review WHERE product_id = '$product_id'";
+    $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        // Output the error message and exit
+        die('Error in query: ' . mysqli_error($conn));
+    }
+
+    $row = mysqli_fetch_assoc($result);
+
+    // Scale the average rating to be within 5
+    $scaled_rating = ($row['avg_rating'] / 5) * 5;
+
+    // Return an associative array with scaled average rating and review count
+    return [
+        'average_rating' => round($scaled_rating, 1) ?: 0,
+        'review_count' => $row['review_count']
+    ];
+}
+
 if(isset($_POST['add_to_cart'])){
 
     $product_name = $_POST['product_name'];
@@ -66,6 +87,7 @@ if(isset($_POST['add_to_cart'])){
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="CSS/shopping.css">
+    
 </head>
 <body>
     <section id="sidebar">
@@ -81,7 +103,7 @@ if(isset($_POST['add_to_cart'])){
                 </a>
             </li>
             <li>
-                <a href="newsfeed.php">
+                <a href="userfeed.php">
                     <i class='bx bx-home' ></i>
                     <span class="text">Newsfeed</span>
                 </a>
@@ -165,10 +187,14 @@ if(isset($_POST['add_to_cart'])){
         </div>
         <?php
       
-            $select_products = mysqli_query($conn, "SELECT * FROM `products` ORDER BY id DESC");
-            if(mysqli_num_rows($select_products) > 0){
-                while($fetch_product = mysqli_fetch_assoc($select_products)){
-        ?>
+      $select_products = mysqli_query($conn, "SELECT * FROM `products` ORDER BY id DESC");
+      if (mysqli_num_rows($select_products) > 0) {
+        while ($fetch_product = mysqli_fetch_assoc($select_products)) {
+            // Calculate the scaled average rating and get the review count for the current product
+            $rating_info = getAverageRating($conn, $fetch_product['product_id']);
+    ?>
+
+    
             <form action="" method="post">     
                 <div class="product-card">
                     <div class="badge">Hot</div>
@@ -182,8 +208,15 @@ if(isset($_POST['add_to_cart'])){
                     <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
                         <span class="product-catagory" name="product_name"><?php echo $fetch_product['category']; ?></span>
                         <h4><a href="./product_details.php?product_id=<?php echo $fetch_product['id']; ?>" name="product_name"><?php echo $fetch_product['name']; ?></a></h4>
+                        <div class="rating">
+                        <!-- Display the scaled average rating -->
+                        <span><?php echo number_format($rating_info['average_rating'], 1); ?></span>
+                        <!-- Display the review count -->
+                        <span>(<?php echo $rating_info['review_count']; ?> reviews)</span>
+                    </div>
                         <div class="product-bottom-details">
                             <div class="product-price" name="product_price">₱<?php echo $fetch_product['price']; ?></div>
+                            
                             <div class="product-links">
                                 <button type="submit" class="fa fa-heart" name="add_to_cart">Add to cart <i class="fas fa-shopping-cart"></i></button>
 

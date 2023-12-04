@@ -56,7 +56,7 @@
                 </a>
             </li>
             <li>
-                <a href="newsfeed.php">
+                <a href="userfeed.php">
                     <i class='bx bx-home' ></i>
                     <span class="text">Newsfeed</span>
                 </a>
@@ -170,6 +170,7 @@
 						<thead>
 							<tr>
                                 <th>Reference ID</th>
+                            
                                 <th>Shop Name</th>
 								<th>Product Name</th>
                                 <th>Quantity</th>
@@ -180,82 +181,151 @@
 							</tr>
 						</thead>
 						<tbody>
-                            <?php
-                                require './php/config.php';
-                                $query = "SELECT checkout.*, products.name as product_name, users.shop_name as seller_shop_name
-                                            FROM checkout 
-                                            INNER JOIN products ON checkout.product_id = products.product_id 
-                                            INNER JOIN users ON products.unique_id = users.unique_id 
-                                            WHERE checkout.unique_id = {$_SESSION['unique_id']}
-                                            ORDER BY checkout.id DESC";
-                                $query_run = mysqli_query($conn, $query);
-                            if(mysqli_num_rows($query_run) > 0)
-                                    {
-                                        foreach($query_run as $order)
-                                        {
-                                             ?>
-                                            <tr>
-                                                <td><?= $order['checkout_id'] ?></td>
-                                                <td><?= $order['seller_shop_name'] ?></td>
-                                                <td><?= $order['product_name'] ?></td>
-                                                <td><?= $order['quantity'] ?></td>
-                                                <td><?= $order['price'] ?></td>
-                                                <td><?= $order['order_date'] ?></td>
-                                                <td><?= $order['status'] ?></td>
-                                                <td>
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#form"> Rate Now </button>
-                                                   
-                                                </td>
-                                       
-                                            </tr>
+                        <?php
+                            require './php/config.php';
+                            $query = "SELECT checkout.*, products.name as product_name, users.shop_name as seller_shop_name
+                                    FROM checkout 
+                                    INNER JOIN products ON checkout.product_id = products.product_id 
+                                    INNER JOIN users ON products.unique_id = users.unique_id 
+                                    WHERE checkout.unique_id = {$_SESSION['unique_id']}
+                                    ORDER BY checkout.id DESC";
+                            $query_run = mysqli_query($conn, $query);
+                            if (mysqli_num_rows($query_run) > 0) {
+                                foreach ($query_run as $order) {
+                                    ?>
+                                    <tr>
+                                        <td><?= $order['checkout_id'] ?></td>
+                                    
+                                        <td><?= $order['seller_shop_name'] ?></td>
+                                        <td><?= $order['product_name'] ?></td>
+                                        <td><?= $order['quantity'] ?></td>
+                                        <td><?= $order['price'] ?></td>
+                                        <td><?= $order['order_date'] ?></td>
+                                        <td><?= $order['status'] ?></td>
+                                        <td>
+                                        <button type="button" class="btn btn-danger rate-now-btn"
+        data-toggle="modal"
+        data-target="#form"
+        data-product-id="<?= $order['product_id'] ?>"
+        data-product-name="<?= $order['product_name'] ?>"
+        data-unique-id="<?= $_SESSION['unique_id'] ?>">Rate Now</button>
 
-                                            <?php
-                                        }
-                                    }
-                                ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                        ?>
+
 						</tbody>
 					</table>
 				</div>
             </div>
-
             <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="text-right cross"> <i class="fa fa-times mr-2"></i> </div>
-            <div class="card-body text-center"> <img src=" https://i.imgur.com/d2dKtI7.png" height="100" width="100">
-                <div class="comment-box text-center">
-                <h4>Add a comment</h4>
-                <div class="rating"> <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label> <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label> </div>
-                <div class="comment-area"> <textarea class="form-control" placeholder="what is your view?" rows="4"></textarea> </div>
-                    
-                    <div class="text-center mt-4"> <button class="btn btn-success send px-5">Send message <i class="fa fa-long-arrow-right ml-1"></i></button>
-            </div>
-            </div>
-        </div>
-    </div>
+            <input type="hidden" id="unique_id" name="unique_id" value="<?php echo isset($_SESSION['unique_id']) ? $_SESSION['unique_id'] : ''; ?>">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    <div class="text-right cross" data-dismiss="modal">
+    <i class="fa fa-times mr-2"></i>
 </div>
-</div>
+
+                            <div class="card-body text-center"> 
+                            <h1 id="modalProductName"></h1>
+                            <h4 id="modalProductId">
+                                <?php
+                                    // Echo the product ID if available
+                                    if (isset($_SESSION['product_id'])) {
+                                        echo $_SESSION['product_id'];
+                                    }
+                                ?>
+                            </h4>
+                            
+                                <div class="comment-box text-center">
+                                <h4>Add a comment</h4>
+                                <div class="rating"> 
+                                    <input type="radio" name="rating" value="5" id="5"> <label for="5">☆</label> 
+                                    <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> 
+                                    <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label> 
+                                    <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> 
+                                    <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label> 
+                                </div>
+                                <div class="comment-area"> 
+                                    <textarea id="commentTextArea" class="form-control" placeholder="What is your view?" rows="4"></textarea>
+                                </div>
+                                
+                                <div class="text-center mt-4"> 
+                                    <button id="submitRatingBtn" class="btn btn-success send px-5">Send message <i class="fa fa-long-arrow-right ml-1"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </section>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'></script>
 	<script src="javascript/design.js"></script>
+    
+   
+
     <script>
-        const pElements = document.querySelectorAll('p');
-        let currentIndex = 0;
+    $(document).ready(function () {
+    $(".rate-now-btn").click(function () {
+        var productId = $(this).data('product-id');
+        var productName = $(this).data('product-name');
+        var uniqueId = $(this).data('unique-id');
 
-        function displayNextP() {
-            pElements.forEach((p, index) => {
-                p.style.display = index === currentIndex ? 'block' : 'none';
-                p.classList.remove('fade');
-            });
+        // Set the product ID, product name, and unique ID in the modal
+        $("#modalProductId").text(productId);
+        $("#modalProductName").text(productName);
+        $("#unique_id").val(uniqueId);
+    });
 
-            currentIndex = (currentIndex + 1) % pElements.length;
+    $(".cross").click(function () {
+        $("#form").modal("hide");
+    });
 
-            pElements[currentIndex].classList.add('fade');
-        }
+    $("#submitRatingBtn").click(function () {
+        var uniqueId = $("#unique_id").val();
+        var productId = $("#modalProductId").text();
+        var rating = $("input[name='rating']:checked").val();
+        var comment = $("#commentTextArea").val();
 
-        displayNextP();
-        setInterval(displayNextP, 5000); // Change the time interval (in milliseconds) as needed
-    </script>
+        $.ajax({
+            type: "POST",
+            url: "./php/submit_rating.php",
+            data: {
+                uniqueId: uniqueId,
+                productId: productId,
+                rating: rating,
+                comment: comment
+            },
+            success: function (response) {
+                if (response === "success") {
+                    // Rating submitted successfully
+                    alert("Rating submitted successfully!");
+                    $("#form").modal("hide");
+                } else {
+                    // Error in the database query
+                    console.error("Error:", response);
+                }
+            },
+            error: function (error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+
+
+</script>
+
+
+
+
+
 </body>
 </html>
+
