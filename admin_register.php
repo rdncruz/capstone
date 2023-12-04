@@ -1,30 +1,4 @@
-<?php 
-    header("Cache-Control: no-cache, no-store, must-revalidate");
-    header("Pragma: no-cache");
-    header("Expires: 0");
-    session_start();
-    include_once "php/config.php";
-    if(!isset($_SESSION['unique_id'])) {
-        header("location: index.php");
-    }
-    $unique_id = $_SESSION['unique_id'];
-    $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = '{$unique_id}'");
-    if (mysqli_num_rows($sql) > 0) {
-        $row = mysqli_fetch_assoc($sql);
-        if($row) {
-            $_SESSION['verification_status'] = $row ['verification_status'];
-            if ($row['role'] === 'admin') {
-                if($row['verification_status'] != 'Verified') {
-                    header("Location: verify.php");
-                }
-            } 
-            else {
-                // Redirect to login.php if the user is not a seller
-                header("Location: index.php");
-            }
-        }
-    }
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
