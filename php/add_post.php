@@ -30,7 +30,9 @@
 
                         if ($conn->query($sql) === TRUE) {
                             echo "Post added successfully";
-                            // You can redirect the user to the newsfeed or perform other actions as needed
+                            // Redirect the user to seller_newsfeed.php
+                            header("Location: seller_newsfeed.php");
+                            exit(); // Ensure that no further code is executed after the redirect
                         } else {
                             echo "Error: " . $sql . "<br>" . $conn->error;
                         }
