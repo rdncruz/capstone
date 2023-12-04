@@ -29,7 +29,13 @@ if (mysqli_num_rows($sql) > 0) {
         }
     }
 }
+function getRatingInfo($conn, $product_id) {
+    $query = "SELECT AVG(rating) as avg_rating, COUNT(*) as review_count FROM review WHERE product_id = '$product_id'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
 
+    return $row;
+}
 // Check if 'product_id' is set in the URL
 if(isset($_GET['product_id'])) {
     $product_id = mysqli_real_escape_string($conn, $_GET['product_id']);
@@ -189,6 +195,7 @@ if(isset($_GET['product_id'])) {
             // Check if $fetch_product is set before displaying details
             if(isset($fetch_product)) {
         ?>
+        
         <form action="" method="post">     
             <div class="single-product">
                 <div class="row">
@@ -205,19 +212,18 @@ if(isset($_GET['product_id'])) {
                                 <h1><?php echo $fetch_product['name']; ?></h1>
                                 <h3><?php echo $fetch_product['Category']; ?></h3>
                             </div>
-                            <div class="product-rating">
-                                <span><i class="bx bxs-star"></i></span>
-                                <span><i class="bx bxs-star"></i></span>
-                                <span><i class="bx bxs-star"></i></span>
-                                <span><i class="bx bxs-star"></i></span>
-                                <span><i class="bx bxs-star"></i></span>
-                                <span class="review">(47 Review)</span>
-                            </div>
+                            <div class="rating">
+    <!-- Display the scaled average rating -->
+    <span><?php echo number_format($rating_info['avg_rating'], 1); ?></span>
+    <!-- Display the review count -->
+    <span>(<?php echo $rating_info['review_count']; ?> reviews)</span>
+</div>
                             <div class="product-price">
                                 <span class="offer-price">₱<?php echo $fetch_product['price']; ?></span>
                             </div>
                             <div class="product-detailss">
-                                <h3>Status: <?php echo $fetch_product['status']; ?> Quantity: <h1><?php echo $fetch_product['quantity']; ?></h3>
+                                <h3>Status: <?php echo $fetch_product['status']; ?> </h3>
+                                <h3>Quantity: <?php echo $fetch_product['quantity']; ?></h3>
                                 <h3>Description</h3>
                                 <p><?php echo $fetch_product['small_description']; ?></p>
                             </div>
