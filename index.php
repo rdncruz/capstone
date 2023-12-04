@@ -15,7 +15,7 @@
 <body data-user-type="user">
     <div class="wrapper">
         <section class="form login">
-            <header>User'ssss Login</header>
+            <header>User's Login</header>
         
             <div class="buttons">
                 <input type="button" id="btnUser" value="User" style="float: left; background:gray;" onclick="navigateToUserPage()">
