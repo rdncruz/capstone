@@ -193,7 +193,8 @@ if(isset($_GET['product_id'])) {
             
             <?php
             // Check if $fetch_product is set before displaying details
-            if(isset($fetch_product)) {
+            if (isset($fetch_product)) {
+                $rating_info = getRatingInfo($conn, $product_id);
         ?>
         
         <form action="" method="post">     
@@ -213,11 +214,11 @@ if(isset($_GET['product_id'])) {
                                 <h3><?php echo $fetch_product['Category']; ?></h3>
                             </div>
                             <div class="rating">
-    <!-- Display the scaled average rating -->
-    <span><?php echo number_format($rating_info['avg_rating'], 1); ?></span>
-    <!-- Display the review count -->
-    <span>(<?php echo $rating_info['review_count']; ?> reviews)</span>
-</div>
+        <!-- Display the scaled average rating -->
+        <span><?php echo number_format($rating_info['avg_rating'], 1); ?></span>
+        <!-- Display the review count -->
+        <span>(<?php echo $rating_info['review_count']; ?> reviews)</span>
+    </div>
                             <div class="product-price">
                                 <span class="offer-price">₱<?php echo $fetch_product['price']; ?></span>
                             </div>
