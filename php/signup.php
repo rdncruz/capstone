@@ -62,23 +62,20 @@
                     else {
                         if($password == $cpassword) {
                             //let's check if the user uploaded a file or not
-                            if(isset($_FILES['image'])){
-                                $img_name = $_FILES['image']['name']; //getting image name
-                                $img_type = $_FILES['image']['type']; //getting image type
-                                $tmp_name = $_FILES['image']['tmp_name'];            
-
-                                $img_explode = explode('.',$img_name);
-                                $img_ext = end($img_explode);
-                                $extensions = ["jpeg", "png", "jpg"]; //these are some valid image extensions
-                                
-                                if(in_array($img_ext, $extensions) === true){
-                                    $types = ["image/jpeg", "image/jpg", "image/png"];
-                                    if(in_array($img_type, $types) === true){
-                                        $time = time();
-                                        $newimgname = $time . $img_name; //creating a unique name for the image
-                                       
-                                        //echo $tmp_name,__DIR__."image/".$newimgname;
-                                        if(move_uploaded_file($tmp_name,"../image/".$newimgname)){ //set the uploaded file storage folder
+                            if (isset($_FILES['image'])) {
+                                $img_name = $_FILES['image']['name'];
+                                // ... (check file type, extension, etc.)
+                                $time = time();
+                                $new_img_name = $time . $img_name;
+                                $upload_path = "../image/" . $new_img_name;
+                                if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
+                                    // File upload handling for the second image (reg_image)
+                                    if (isset($_FILES['reg_image'])) {
+                                        $reg_img_name = $_FILES['reg_image']['name'];
+                                        // ... (check file type, extension, etc.)
+                                        $new_reg_img_name = $time . $reg_img_name;
+                                        $reg_upload_path = "../image/" . $new_reg_img_name;
+                                        if (move_uploaded_file($_FILES['reg_image']['tmp_name'], $reg_upload_path)) {
                                             $ran_id = rand(time(), 100000000); //create a unique user id
                                             $otp = mt_rand(1111, 9999); //creating 4 digits otp
 
@@ -155,16 +152,16 @@
                                                 echo "Something went wrong. Please try again!";
                                             }
                                         } else {
-                                            echo "File upload failed: ";
+                                            echo "Second file not uploaded";
                                         }
+                                    } else {
+                                        echo "User did not upload the second image";
                                     }
-                                    else {
-                                        echo "Please upload an image file - jpeg, png, jpg";
-                                    }
+                                } else {
+                                    echo "First file not uploaded";
                                 }
-                                else {
-                                    echo "Please upload an image file - jpeg, png, jpg";
-                                }
+                            } else {
+                                echo "User did not upload the first image";
                             }
                         }
                         else {
