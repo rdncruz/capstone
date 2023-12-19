@@ -346,43 +346,78 @@
   
     
     <script>
-    var map;
-    var markers = [];
-    var distanceElement = document.getElementById('distance');
+     var map;
+        var markers = [];
+        var distanceElement = document.getElementById('distance');
 
-    function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 14.4929, lng: 120.5049 },
-        zoom: 12.5
-    });
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 14.4929, lng: 120.5049 },
+                zoom: 12.5
+            });
 
-    // Add a custom icon for the user's location marker
-    var userMarker = new google.maps.Marker({
-        position: { lat: parseFloat(<?php echo $userLat; ?>), lng: parseFloat(<?php echo $userLng; ?>) },
-        map: map,
-        title: 'Your Location',
-        icon: {
-            url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', // Set the URL of the custom icon
+            // Add a custom icon for the user's location marker
+            var userMarker = new google.maps.Marker({
+                position: { lat: 0, lng: 0 }, // Default location
+                map: map,
+                title: 'Your Location',
+                icon: {
+                    url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', // Set the URL of the custom icon
+                }
+            });
+
+            markers.push(userMarker);
+
+            // Fetched seller data, including lat and lng, from the PHP code
+            var sellers = <?php echo json_encode($sellers); ?>;
+
+            sellers.forEach(function (seller) {
+                var marker = new google.maps.Marker({
+                    position: { lat: parseFloat(seller.lat), lng: parseFloat(seller.lng) },
+                    map: map,
+                    title: seller.shop_name,
+                });
+
+                markers.push(marker);
+            });
+
+            // Call the function to update the user's location
+            updateCurrentUserLocation();
+
+            // Set an interval to update the user's location periodically (every 5 seconds in this example)
+            setInterval(updateCurrentUserLocation, 5000);
         }
-    });
 
-    markers.push(userMarker);
+        function updateCurrentUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                var userLat = position.coords.latitude;
+                var userLng = position.coords.longitude;
 
-    // Fetched seller data, including lat and lng, from the PHP code
-    var sellers = <?php echo json_encode($sellers); ?>;
+                // Log the obtained coordinates
+                console.log('User location:', userLat, userLng);
 
-    sellers.forEach(function (seller) {
-        var marker = new google.maps.Marker({
-            position: { lat: parseFloat(seller.lat), lng: parseFloat(seller.lng) },
-            map: map,
-            title: seller.shop_name,
-        });
+                // Update the user's marker on the map
+                markers[0].setPosition({ lat: userLat, lng: userLng });
+                map.panTo({ lat: userLat, lng: userLng });
 
-        markers.push(marker);
-    });
+                // Update the user's location in the database (optional)
+                // You may want to send the updated location to the server using AJAX.
 
-    updateDistance();
+                // Update the distance between the user and sellers
+                updateDistance();
+            },
+            function (error) {
+                console.error('Error getting user location:', error.message);
+            }
+        );
+    } else {
+        console.error('Geolocation is not supported by this browser.');
+    }
 }
+
+
 
 
   
