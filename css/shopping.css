@@ -527,7 +527,7 @@ mark,
 
 .img-fluid {
   max-width: 100%;
-  height: auto;
+  height: 400px;
 }
 
 .img-thumbnail {
@@ -9275,6 +9275,7 @@ a.text-primary:hover, a.text-primary:focus {
 
 .text-secondary {
   color: #000000 !important;
+  
 }
 
 
