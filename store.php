@@ -212,8 +212,8 @@ if(isset($_POST['add_to_cart'])){
                         <!-- Display the scaled average rating -->
                         <span><?php echo number_format($rating_info['average_rating'], 1); ?></span>
                         <!-- Display the review count -->
-                        <span>(<?php echo $rating_info['review_count']; ?> reviews)</span>
-                    </div>
+                            <span>(<?php echo $rating_info['review_count']; ?> reviews)</span>
+                        </div>
                         <div class="product-bottom-details">
                             <div class="product-price" name="product_price">₱<?php echo $fetch_product['price']; ?></div>
                             
