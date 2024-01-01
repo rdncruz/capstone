@@ -224,7 +224,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                                 <div class="product-item bg-light mb-4">
                                     <div class="product-img position-relative overflow-hidden">
-                                        <img class="img-fluid w-100" src="img/product-1.jpg" alt="">
+                                        <img class="img-fluid w-100" src="image/Orange_Minimalist_Fishing_Logo.png" alt="">
                                     </div>
                                     <div class="text-center py-4">
                                         <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
