@@ -92,6 +92,7 @@ if(isset($_POST['add_to_cart'])){
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="CSS/shopping.css">
     
     
 </head>
@@ -350,6 +351,10 @@ if(isset($_POST['add_to_cart'])){
     </section>
     <script src="javascript/design.js"></script>
     <script src="javascript/design.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('#add-to-cart-button').addEventListener('click', function() {
