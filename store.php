@@ -304,7 +304,7 @@ if(isset($_POST['add_to_cart'])){
                             <?php echo $row_count; ?>
                         </span>
                     </a>
-                    </div>
+                    
                     <?php
 
                     $select_products = mysqli_query($conn, "SELECT * FROM `products` ORDER BY id DESC");
