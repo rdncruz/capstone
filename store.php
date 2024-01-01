@@ -292,27 +292,6 @@ if(isset($_POST['add_to_cart'])){
                         </div>
                         <!-- Size End -->
                     </div>
-                    <?php
-    
-                        $select_rows = mysqli_query($conn, "SELECT * FROM `cart` where unique_id = {$_SESSION['unique_id']}") or die('query failed');
-                        $row_count = mysqli_num_rows($select_rows);
-
-                    ?>
-                    <a href="cart.php?id=<?php echo $row['unique_id']; ?>" class="btn-download">
-                        <i class='bx bxs-cart-add'></i>
-                        <span id="cart_count" class="cart" > 
-                            <?php echo $row_count; ?>
-                        </span>
-                    </a>
-                    
-                    <?php
-
-                    $select_products = mysqli_query($conn, "SELECT * FROM `products` ORDER BY id DESC");
-                    if (mysqli_num_rows($select_products) > 0) {
-                    while ($fetch_product = mysqli_fetch_assoc($select_products)) {
-                    // Calculate the scaled average rating and get the review count for the current product
-                    $rating_info = getAverageRating($conn, $fetch_product['product_id']);
-                    ?>
 
                     <div class="col-lg-9 col-md-8">
                         <div class="row pb-3">
@@ -320,7 +299,28 @@ if(isset($_POST['add_to_cart'])){
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                                     <div class="product-item bg-light mb-4">
                                         <div class="product-img position-relative overflow-hidden">
-                                            <img class="img-fluid w-100" src="Image/<?php echo $fetch_product['image']; ?>" alt="">
+                                            <img class="img-fluid w-100" src="Image/" alt="">
+                                        </div>
+                                        <div class="text-center py-4">
+                                            <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
+                                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                                <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small>(99)</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                    <div class="product-item bg-light mb-4">
+                                        <div class="product-img position-relative overflow-hidden">
+                                            <img class="img-fluid w-100" src="Image/" alt="">
                                         </div>
                                         <div class="text-center py-4">
                                             <a class="h6 text-decoration-none text-truncate" href="">Product Name Goes Here</a>
@@ -339,10 +339,7 @@ if(isset($_POST['add_to_cart'])){
                                     </div>
                                 </div>
                             </form>
-                            <?php
-                            };
-                        };
-                        ?>
+
                         </div>
                     </div>
                 </div>
