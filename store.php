@@ -175,7 +175,7 @@ if(isset($_POST['add_to_cart'])){
 
         <main>
             
-    
+        <form action="" method="post">   
             <div class="container-fluid">
                 <div class="row px-xl-5">
                     <!-- Shop Sidebar Start -->
@@ -280,10 +280,8 @@ if(isset($_POST['add_to_cart'])){
                     
         
                     <!-- Shop Product Start -->
-                 
                     <div class="col-lg-9 col-md-8">
                         <div class="row pb-3">
-                            
                             
                         <?php
       
@@ -295,7 +293,6 @@ if(isset($_POST['add_to_cart'])){
                             ?>
                             
                             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                <form action="" method="post">   
                                 <div class="product-item bg-light mb-4">
                                 <input type="hidden" name="product_id" value="<?php echo $fetch_product['product_id']; ?>">
                                 <input type="hidden" name="product_name" value="<?php echo $fetch_product['name']; ?>">
@@ -311,10 +308,12 @@ if(isset($_POST['add_to_cart'])){
                                         </div>
                                         <div class="rating">
                                             <!-- Display the scaled average rating -->
-                                                <small class="fa fa-star text-primary mr-1"></small>
-                                                <small><?php echo number_format($rating_info['average_rating'], 1); ?></small>
-                                            <!-- Display the review count -->
                                                 <small>(<?php echo $rating_info['review_count']; ?> reviews)</small>
+                                                <small><?php echo number_format($rating_info['average_rating'], 1); ?></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                
+                                            <!-- Display the review count -->
+                                                
                                         </div>
 
                                         <!--
