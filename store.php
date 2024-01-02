@@ -250,7 +250,7 @@ if(isset($_POST['add_to_cart'])){
                             <form>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" checked id="size-all">
-                                    <label class="custom-control-label" for="size-all">All Size</label>
+                                    <label class="custom-control-label" for="size-all">All Shop</label>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="size-1">
