@@ -175,7 +175,7 @@ if(isset($_POST['add_to_cart'])){
 
         <main>
             
-        <form action="" method="post">   
+      
             <div class="container-fluid">
                 <div class="row px-xl-5">
                     <!-- Shop Sidebar Start -->
@@ -371,11 +371,11 @@ if(isset($_POST['add_to_cart'])){
         </main>
     </section>
     <script src="javascript/design.js"></script>
-    <script src="javascript/design.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
 </body>
 </html>
                     
