@@ -166,7 +166,7 @@ if(isset($_POST['add_to_cart'])){
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="" class="btn px-0 ml-3">
                 <i class="fas fa-shopping-cart shopping-cart-icon"></i>
-                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;"><h6>10</h6></span>
+                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">10</span>
             </a>
 			<a href="#" class="profile">
 				<img src="./image/<?php echo $row['img']; ?>" alt="">
@@ -175,7 +175,7 @@ if(isset($_POST['add_to_cart'])){
 
         <main>
             
-      
+    
             <div class="container-fluid">
                 <div class="row px-xl-5">
                     <!-- Shop Sidebar Start -->
@@ -187,32 +187,26 @@ if(isset($_POST['add_to_cart'])){
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" checked id="price-all">
                                     <label class="custom-control-label" for="price-all">All Price</label>
-                                    <span class="badge border font-weight-normal">1000</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="price-1">
                                     <label class="custom-control-label" for="price-1">$0 - $100</label>
-                                    <span class="badge border font-weight-normal">150</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="price-2">
                                     <label class="custom-control-label" for="price-2">$100 - $200</label>
-                                    <span class="badge border font-weight-normal">295</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="price-3">
                                     <label class="custom-control-label" for="price-3">$200 - $300</label>
-                                    <span class="badge border font-weight-normal">246</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="price-4">
                                     <label class="custom-control-label" for="price-4">$300 - $400</label>
-                                    <span class="badge border font-weight-normal">145</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                                     <input type="checkbox" class="custom-control-input" id="price-5">
                                     <label class="custom-control-label" for="price-5">$400 - $500</label>
-                                    <span class="badge border font-weight-normal">168</span>
                                 </div>
                             </form>
                         </div>
@@ -225,32 +219,26 @@ if(isset($_POST['add_to_cart'])){
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" checked id="color-all">
                                     <label class="custom-control-label" for="price-all">All Color</label>
-                                    <span class="badge border font-weight-normal">1000</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="color-1">
                                     <label class="custom-control-label" for="color-1">Black</label>
-                                    <span class="badge border font-weight-normal">150</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="color-2">
                                     <label class="custom-control-label" for="color-2">White</label>
-                                    <span class="badge border font-weight-normal">295</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="color-3">
                                     <label class="custom-control-label" for="color-3">Red</label>
-                                    <span class="badge border font-weight-normal">246</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="color-4">
                                     <label class="custom-control-label" for="color-4">Blue</label>
-                                    <span class="badge border font-weight-normal">145</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                                     <input type="checkbox" class="custom-control-input" id="color-5">
                                     <label class="custom-control-label" for="color-5">Green</label>
-                                    <span class="badge border font-weight-normal">168</span>
                                 </div>
                             </form>
                         </div>
@@ -263,32 +251,26 @@ if(isset($_POST['add_to_cart'])){
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" checked id="size-all">
                                     <label class="custom-control-label" for="size-all">All Size</label>
-                                    <span class="badge border font-weight-normal">1000</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="size-1">
                                     <label class="custom-control-label" for="size-1">XS</label>
-                                    <span class="badge border font-weight-normal">150</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="size-2">
                                     <label class="custom-control-label" for="size-2">S</label>
-                                    <span class="badge border font-weight-normal">295</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="size-3">
                                     <label class="custom-control-label" for="size-3">M</label>
-                                    <span class="badge border font-weight-normal">246</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" class="custom-control-input" id="size-4">
                                     <label class="custom-control-label" for="size-4">L</label>
-                                    <span class="badge border font-weight-normal">145</span>
                                 </div>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                                     <input type="checkbox" class="custom-control-input" id="size-5">
                                     <label class="custom-control-label" for="size-5">XL</label>
-                                    <span class="badge border font-weight-normal">168</span>
                                 </div>
                             </form>
                         </div>
@@ -298,8 +280,10 @@ if(isset($_POST['add_to_cart'])){
                     
         
                     <!-- Shop Product Start -->
+                 
                     <div class="col-lg-9 col-md-8">
                         <div class="row pb-3">
+                            
                             
                         <?php
       
@@ -311,6 +295,7 @@ if(isset($_POST['add_to_cart'])){
                             ?>
                             
                             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                <form action="" method="post">   
                                 <div class="product-item bg-light mb-4">
                                 <input type="hidden" name="product_id" value="<?php echo $fetch_product['product_id']; ?>">
                                 <input type="hidden" name="product_name" value="<?php echo $fetch_product['name']; ?>">
@@ -371,11 +356,11 @@ if(isset($_POST['add_to_cart'])){
         </main>
     </section>
     <script src="javascript/design.js"></script>
+    <script src="javascript/design.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
 </body>
 </html>
                     
