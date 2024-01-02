@@ -37,6 +37,7 @@ function getRatingInfo($conn, $product_id) {
     return $row;
 }
 // Check if 'product_id' is set in the URL
+
 if(isset($_GET['product_id'])) {
     $product_id = mysqli_real_escape_string($conn, $_GET['product_id']);
 
@@ -211,13 +212,13 @@ if(isset($_GET['product_id'])) {
                         <div class="product">
                             <div class="product-title">
                                 <h1><?php echo $fetch_product['name']; ?></h1>
-                                <h3><?php echo $fetch_product['Category']; ?></h3>
+                                <!--<h3><?php echo $fetch_product['Category']; ?></h3>-->
                             </div>
                             <div class="rating">
         <!-- Display the scaled average rating -->
         <span><?php echo number_format($rating_info['avg_rating'], 1); ?></span>
         <!-- Display the review count -->
-        <span>(<?php echo $rating_info['review_count']; ?> reviews)</span>
+        s
     </div>
                             <div class="product-price">
                                 <span class="offer-price">₱<?php echo $fetch_product['price']; ?></span>
