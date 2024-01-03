@@ -164,8 +164,7 @@ if(isset($_GET['product_id'])) {
 					<!---->
 				</div>
 			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
+		
 			<a href="cart.php" class="btn px-0 ml-3">
                 <i class="fas fa-shopping-cart shopping-cart-icon"></i>
                 <?php
@@ -182,8 +181,9 @@ if(isset($_GET['product_id'])) {
 				<img src="./image/<?php echo $row['img']; ?>" alt="">
 			</a>
 		</nav>
-
+                  
         <main>
+        
             <?php
                 // Check if $fetch_product is set before displaying details
                 if (isset($fetch_product)) {
@@ -216,19 +216,7 @@ if(isset($_GET['product_id'])) {
 
                             <p class="mb-4"><?php echo $fetch_product['status']; ?></p>
                             <div class="d-flex align-items-center mb-4 pt-2">
-                                <div class="input-group quantity mr-3" style="width: 180px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary btn-minus">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                
                                 
                                 <button type="submit" class="btn btn-primary px-3" name="add_to_cart"> <i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                                 <input type="hidden" name="id" value=" ">

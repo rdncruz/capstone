@@ -46,131 +46,6 @@ if(isset($_GET['delete_all'])){
 }
 
 
-
-if (isset($_POST['place_order_btn'])) {
-   $unique_id = $_SESSION['unique_id'];
-   
-   // Fix the SQL query and fetch the user data
-   $user_query = mysqli_query($conn, "SELECT * FROM `users` WHERE unique_id = '{$unique_id}'");
-   $user_data = mysqli_fetch_assoc($user_query);
-   $username = $user_data['username'];
-   $user_first_name = $user_data['fname'];
-   $user_last_name = $user_data['lname'];
-   $user_email = $user_data['email'];
-   $user_address = $user_data['address'];
-
-   $cart_query = mysqli_query($conn, "SELECT cart.*, products.name, products.price FROM `cart` INNER JOIN `products` ON cart.product_id = products.product_id WHERE cart.unique_id = '{$unique_id}'");
-    
-    $price_total = 0;
-    $product_ids = [];
-
-    if (mysqli_num_rows($cart_query) > 0) {
-        while ($product_item = mysqli_fetch_assoc($cart_query)) {
-            $product_name[] = $product_item['name'] . ' (' . $product_item['quantity'] . ') ' . ('</br>');
-            $product_price = $product_item['price'] * $product_item['quantity']; // Calculate total price for each product
-            $price_total += $product_price;
-            $product_ids[] = $product_item['product_id'];
-            
-        }   
-    }
-
-    $total_product = implode($product_name);
-    $ref_id = rand(time(), 100000000);
-   if ($cart_query) {
-      echo "
-      <div class='order-message-container'>
-          <div class='message-container'>
-              <h3>Confirm Your Order!</h3>
-              <h4>Reference Number: ".$ref_id."</h4>
-              <div class='order-detail'>
-                  <span>" . $total_product . "</span>
-                  <span class='total'>Total: P " . $price_total . "</span>
-              </div>
-              <div class='customer-details'>
-                   <p>Username: <span>" . $username . "</span></p>
-                  <p>Name: <span>" . $user_first_name . " " . $user_last_name . "</span></p>
-                  <p>Your email: <span>" . $user_email . "</span></p>
-                  <p>Your address: <span>" . $user_address . "</span></p>
-                  <p>(*Pay when the product arrives*)</p>
-              </div>
-              <a href='cart.php' class='btn'>Go back to the cart</a>
-              <form method='post' action=''>
-              <input type='submit' value='Order Now' name='order_btn' class='btn'>
-          </form>
-          </div>
-      </div>
-      ";
-  }
-}
-
-
-
-if (isset($_POST['order_btn'])) {
-    $unique_id = $_SESSION['unique_id'];
-   
-    // Fix the SQL query and fetch the user data
-    $user_query = mysqli_query($conn, "SELECT * FROM `users` WHERE unique_id = '{$unique_id}'");
-    $user_data = mysqli_fetch_assoc($user_query);
-    $username = $user_data['username'];
-    $user_first_name = $user_data['fname'];
-    $user_last_name = $user_data['lname'];
-    $fullname = $user_first_name . ''.$user_last_name.'';
-    $user_email = $user_data['email'];
-    $user_address = $user_data['address'];
-    $quantity = ['quantity'];
-    $current_date = date('Y-m-d');
-
-    $cart_query = mysqli_query($conn, "SELECT cart.*, products.name, products.price FROM `cart` INNER JOIN `products` ON cart.product_id = products.product_id WHERE cart.unique_id = '{$unique_id}'");
-    
-    $price_total = 0;
-   
-
-    if (mysqli_num_rows($cart_query) > 0) {
-        while ($product_item = mysqli_fetch_assoc($cart_query)) {
-            $product_name[] = $product_item['name'] . ' (' . $product_item['quantity'] . ') ';
-            $product_price = $product_item['price'] * $product_item['quantity']; // Calculate total price for each product
-            $price_total += $product_price;
-            $product_ids[] = $product_item['product_id'];
-            $quantity = $product_item['quantity'];
-            
-        }   
-    }
-
-    $total_product = implode(', ', $product_name);
-    
-    $product_ids_str = implode(', ', $product_ids);
-    foreach ($product_ids as $product_id) {
-      // Check if the product_id already exists in the checkout table
-
-          $detail_query = mysqli_query($conn, "INSERT INTO `checkout` (checkout_id, unique_id, product_id, name, username, quantity, price, order_date, status) VALUES ('$ref_id', '$unique_id', '$product_id', '$fullname', '$username', '$quantity', '$price_total', '$current_date', 'pending')") or die('query failed: ' . mysqli_error($conn));
-      
-  }
-    $delete_cart_query = mysqli_query($conn, "DELETE FROM `cart` WHERE unique_id = '$unique_id' AND product_id IN ($product_ids_str)");
-
-    if ($cart_query && $detail_query) {
-        echo "
-        <div class='order-message-container'>
-            <div class='message-container'>
-                <h3>Order has been Confirm!</h3>
-                <h4>Reference Number: ".$ref_id."</h4>
-                <div class='order-detail'>
-                    <span>" . $total_product . "</span>
-                    <span class='total'>Total: P " . $price_total . "</span>
-                </div>
-                <div class='customer-details'>
-                     <p>Username: <span>" . $username . "</span></p>
-                    <p>Name: <span>" . $fullname . "</span></p>
-                    <p>Your email: <span>" . $user_email . "</span></p>
-                    <p>Your address: <span>" . $user_address . "</span></p>
-                    <p>(*Pay when the product arrives*)</p>
-                    <p>(*The product in cart will automatically Remove*)</p>
-                </div>
-                <a href='store.php' class='btn'>Go back to Shopping</a>
-            </div>
-        </div>
-        ";
-    }
-}
 ?>
 
 
@@ -256,8 +131,9 @@ if (isset($_POST['order_btn'])) {
       </tbody>
 
    </table>
-   <form action="" method="post">
+   <form action="checkout.php" method="post">
    <div class="checkout-btn">
+
    <input type="submit" value="order now" name="place_order_btn" class="btn">
    </div>
    </form>

@@ -962,7 +962,7 @@ body {
     text-transform: uppercase;
     font-size: 13px;
     font-weight: 700;
-    background: red;
+    background: rgb(0, 0, 0);
     color: #fff;
     padding: 3px 10px;
 }

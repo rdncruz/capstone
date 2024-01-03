@@ -3354,6 +3354,7 @@ input[type="button"].btn-block {
   width: 1%;
   min-width: 0;
   margin-bottom: 0;
+
 }
 
 .input-group > .form-control + .form-control,
@@ -9263,7 +9264,7 @@ button.bg-dark:focus {
   color: #fff !important;
 }
 .shopping-cart-icon {
-  color: red;
+  color: black;
 }
 .text-primary {
   color: #FFD333 !important;
@@ -9274,7 +9275,7 @@ a.text-primary:hover, a.text-primary:focus {
 }
 
 .text-secondary {
-  color: #000000 !important;
+  color: #ffffff !important;
   
 }
 

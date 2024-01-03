@@ -155,22 +155,29 @@ if(isset($_POST['add_to_cart'])){
 
     <section id="container">
         <nav>
-			<i class='bx bx-menu' ></i>
-		
-			<form action="#">
-				<div class="form-input">
-					<!---->
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<a href="" class="btn px-0 ml-3">
+            <i class='bx bx-menu' ></i>
+            
+            <form action="#">
+                <div class="form-input">
+                    <!---->
+                </div>
+            </form>
+        
+            <a href="cart.php" class="btn px-0 ml-3">
                 <i class="fas fa-shopping-cart shopping-cart-icon"></i>
-                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">10</span>
+                <?php
+            
+                
+                $select_rows = mysqli_query($conn, "SELECT * FROM `cart` where unique_id = '$unique_id'") or die('query failed');
+                $count = mysqli_num_rows($select_rows);
+
+                echo "<span class=\"badge text-secondary border border-secondary rounded-circle\" style=\"padding-bottom: 2px;\">$count</span>";
+                ?>
             </a>
-			<a href="#" class="profile">
-				<img src="./image/<?php echo $row['img']; ?>" alt="">
-			</a>
+
+            <a href="#" class="profile">
+                <img src="./image/<?php echo $row['img']; ?>" alt="">
+            </a>
 		</nav>
 
         <main>
