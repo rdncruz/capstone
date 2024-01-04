@@ -43,7 +43,7 @@
 <body data-user-type="admin">
     <div class="wrapper">
         <section class="form signup">
-            <header>Consumer Registration</header>
+            <header>Admin Registration</header>
             <form action="#" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <div class="error-text"></div>
                 <input type="hidden" name="address">
@@ -65,7 +65,7 @@
                 </div>
                 
                 <div class="field button">
-                    <input type="submit" name="submit" value="Continue to Chat">
+                    <input type="submit" name="submit" value="Signup">
                 </div>
             </form>
             <div class="link">Already signed up? <a href="index.php">Login now</a></div>
