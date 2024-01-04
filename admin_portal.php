@@ -125,9 +125,9 @@
                                     <thead>
                                         <tr>
                                             <th>User Id</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Address</th>
+                                            <th>Shop Name</th>
+                                            <th>Full Name</th>
+                                            <th>City</th>
                                             <th>Verify Status</th>
                                             <th>image</th>
                                             <th>Action</th>
