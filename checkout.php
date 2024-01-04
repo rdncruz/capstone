@@ -283,10 +283,10 @@ if (mysqli_num_rows($sql) > 0) {
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="py-2"> <span class="d-block text-muted">Order Date</span>  </div>
+                                    <div class="py-2"> <span class="d-block text-muted">Order Date</span> <?php echo $current_date ?> </div>
                                 </td>
                                 <td>
-                                    <div class="py-2"> <span class="d-block text-muted">Order No</span> <span></span> </div>
+                                    <div class="py-2"> <span class="d-block text-muted">Order No</span> <span></span> <?php echo $ref_id ?></div>
                                 </td>
                             </tr>
                         </tbody>
