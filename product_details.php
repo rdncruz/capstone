@@ -302,10 +302,7 @@ if (isset($fetch_product)) {
                                                             <label>E-mail</label>
                                                             <input class="form-control" type="text" value="<?php echo $shop_owner_details['email']; ?>" readonly>
                                                         </div>
-                                                        <div class="col-md-6 form-group">
-                                                            <label>Address Line 1</label>
-                                                            <input class="form-control" type="text" placeholder="123 Street">
-                                                        </div>
+                                                        
                                                         <div class="col-md-6 form-group">
                                                             <label>City</label>
                                                             <input class="form-control" type="text" value="<?php echo $shop_owner_details['address']; ?>" readonly>
