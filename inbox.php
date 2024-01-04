@@ -115,7 +115,9 @@
           <!---->
         </div>
       </form>
-      
+      <a href="user_profile.php" style="font-size: 30px;">
+				<i class='bx bxs-cog' ></i>
+			</a>
       <a href="#" class="profile">
         <img src="./image/<?php echo $row['img']; ?>" alt="">
       </a>
@@ -139,7 +141,7 @@
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="users-list">
-          
+            
           </div>
         </section>
       </div>

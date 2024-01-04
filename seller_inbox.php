@@ -54,7 +54,7 @@
   <section id="sidebar">
     <a href="#" class="logo">
       <i class='bx bxs-store'></i>
-      <span class="text"><?php echo $row['username']; ?></span>
+      <span class="text"><?php echo $row['shop_name']; ?></span>
     </a>
     <ul class="sidebar-menu">
     <li>
@@ -111,12 +111,9 @@
           <!---->
         </div>
       </form>
-      <input type="checkbox" id="switch-mode" hidden>
-      <label for="switch-mode" class="switch-mode"></label>
-      <a href="#" class="notification">
-        <i class='bx bxs-bell' ></i>
-        <span class="num">8</span>
-      </a>
+      <a href="seller_profile.php" style="font-size: 30px;">
+				<i class='bx bxs-cog' ></i>
+			</a>
       <a href="#" class="profile">
         <img src="./image/<?php echo $row['img']; ?>" alt="">
       </a>

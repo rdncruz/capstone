@@ -109,7 +109,7 @@ if(isset($_POST['add_to_cart'])){
                 </a>
             </li>
             <li>
-                <a href="userfeed.php">
+                <a href="newsfeed.php">
                     <i class='bx bx-home' ></i>
                     <span class="text">Newsfeed</span>
                 </a>
@@ -155,18 +155,18 @@ if(isset($_POST['add_to_cart'])){
 
     <section id="container">
         <nav>
-            <i class='bx bx-menu' ></i>
-            
-            <form action="#">
-                <div class="form-input">
-                    <!---->
-                </div>
-            </form>
-        
-            <a href="cart.php" class="btn px-0 ml-3">
+			<i class='bx bx-menu' ></i>
+		
+			<form action="#">
+				<div class="form-input">
+					<!---->
+				</div>
+			</form>
+			
+			<a href="cart.php" class="btn px-0 ml-3">
                 <i class="fas fa-shopping-cart shopping-cart-icon"></i>
                 <?php
-            
+              
                 
                 $select_rows = mysqli_query($conn, "SELECT * FROM `cart` where unique_id = '$unique_id'") or die('query failed');
                 $count = mysqli_num_rows($select_rows);
@@ -174,10 +174,12 @@ if(isset($_POST['add_to_cart'])){
                 echo "<span class=\"badge text-secondary border border-secondary rounded-circle\" style=\"padding-bottom: 2px;\">$count</span>";
                 ?>
             </a>
-
-            <a href="#" class="profile">
-                <img src="./image/<?php echo $row['img']; ?>" alt="">
-            </a>
+            <a href="user_profile.php" style="font-size: 30px;">
+				<i class='bx bxs-cog' ></i>
+			</a>
+			<a href="#" class="profile">
+				<img src="./image/<?php echo $row['img']; ?>" alt="">
+			</a>
 		</nav>
 
         <main>
@@ -190,64 +192,44 @@ if(isset($_POST['add_to_cart'])){
                         <!-- Price Start -->
                         <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
                         <div class="bg-light p-4 mb-30">
-                            <form>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" checked id="price-all">
-                                    <label class="custom-control-label" for="price-all">All Price</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="price-1">
-                                    <label class="custom-control-label" for="price-1">$0 - $100</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="price-2">
-                                    <label class="custom-control-label" for="price-2">$100 - $200</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="price-3">
-                                    <label class="custom-control-label" for="price-3">$200 - $300</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="price-4">
-                                    <label class="custom-control-label" for="price-4">$300 - $400</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" class="custom-control-input" id="price-5">
-                                    <label class="custom-control-label" for="price-5">$400 - $500</label>
-                                </div>
-                            </form>
+                        <form method="post" action="">
+                            <div class="form-group">
+                                <label for="min_price">Min Price</label>
+                                <input type="number" class="form-control" id="min_price" name="min_price" placeholder="Enter min price">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_price">Max Price</label>
+                                <input type="number" class="form-control" id="max_price" name="max_price" placeholder="Enter max price">
+                            </div>
+                            <button type="submit" class="btn btn-primary" name="filter_price">Apply Filter</button>
+                            <button type="submit" class="btn btn-secondary" name="reset_filter">Reset Filter</button>
+                        </form>
                         </div>
                         <!-- Price End -->
         
                         <!-- Size Start -->
                         <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by Shop</span></h5>
                         <div class="bg-light p-4 mb-30">
-                            <form>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" checked id="size-all">
-                                    <label class="custom-control-label" for="size-all">All Shop</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="size-1">
-                                    <label class="custom-control-label" for="size-1">XS</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="size-2">
-                                    <label class="custom-control-label" for="size-2">S</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="size-3">
-                                    <label class="custom-control-label" for="size-3">M</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="size-4">
-                                    <label class="custom-control-label" for="size-4">L</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" class="custom-control-input" id="size-5">
-                                    <label class="custom-control-label" for="size-5">XL</label>
-                                </div>
-                            </form>
+                        <form method="post" action="">
+            <div class="form-group">
+                <label for="selected_shop">Select Shop</label>
+                <select class="form-control" id="selected_shop" name="selected_shop">
+
+                    <option value="" selected>Select a shop</option>
+                    <?php
+                    $select_shops = mysqli_query($conn, "SELECT DISTINCT shop_name FROM users WHERE shop_name IS NOT NULL");
+                    while ($shop = mysqli_fetch_assoc($select_shops)) {
+                        ?>
+                        <option value="<?php echo $shop['shop_name']; ?>"><?php echo $shop['shop_name']; ?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" name="filter_shop">Apply Shop Filter</button>
+            <!-- Add Reset Shop Filter button -->
+            <button type="submit" class="btn btn-secondary" name="reset_shop_filter">Reset Shop Filter</button>
+        </form>
                         </div>
                         <!-- Size End -->
                     </div>
@@ -259,9 +241,62 @@ if(isset($_POST['add_to_cart'])){
                         <div class="row pb-3">
                             
                         <?php
-      
-                            $select_products = mysqli_query($conn, "SELECT * FROM `products` ORDER BY id DESC");
-                            if (mysqli_num_rows($select_products) > 0) {
+                        $filter_sql = "";
+     
+
+                        if(isset($_POST['filter_price'])){
+                            $min_price = mysqli_real_escape_string($conn, $_POST['min_price']);
+                            $max_price = mysqli_real_escape_string($conn, $_POST['max_price']);
+                        
+                            // Validate the input values (you may add more robust validation as needed)
+                            if (!is_numeric($min_price) || !is_numeric($max_price)) {
+                                // Handle invalid input
+                                echo "Please enter valid numeric values for both min and max prices.";
+                                exit();
+                            }
+                        
+                            $filter_sql = " AND price BETWEEN $min_price AND $max_price";
+                        }
+                        if (isset($_POST['reset_filter'])) {
+                            // Clear filter values
+                            $min_price = $max_price = "";
+                        }
+
+                      
+                        if (isset($_POST['filter_shop'])) {
+                            $selected_shop = isset($_POST['selected_shop']) ? mysqli_real_escape_string($conn, $_POST['selected_shop']) : '';
+                        
+                            
+                        
+                            if (!empty($selected_shop)) {
+                                // Apply the shop filter to the SQL query
+                                $filter_sql .= " AND shop_name = '$selected_shop'";
+                            }
+                        }
+                        
+                        
+                        // Check for Reset Shop Filter button
+                        if (isset($_POST['reset_shop_filter'])) {
+                            // Clear the shop filter
+                            $selected_shop = '';
+                        }
+
+                        
+                        
+                        // Add this line after the $select_products query
+                        
+                        
+                        // Check for Reset Shop Filter button
+
+                        $select_products = mysqli_query($conn, "SELECT p.*, u.shop_name FROM `products` p JOIN `users` u ON p.unique_id = u.unique_id WHERE 1 $filter_sql ORDER BY p.id DESC");
+
+
+// Check for errors
+if (!$select_products) {
+    // Output the error message and exit
+    die('Error in query: ' . mysqli_error($conn));
+}
+                        if (mysqli_num_rows($select_products) > 0) {
                                 while ($fetch_product = mysqli_fetch_assoc($select_products)) {
                                     // Calculate the scaled average rating and get the review count for the current product
                                     $rating_info = getAverageRating($conn, $fetch_product['product_id']);

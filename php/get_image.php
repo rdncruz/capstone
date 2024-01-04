@@ -1,33 +1,40 @@
 <?php
-// Include your database connection file here if needed (e.g., config.php)
+// Include your database configuration
+include_once "config.php";
 
-if (isset($_POST['unique_id'])) {
-    // Sanitize and retrieve the unique ID
-    $uniqueId = $_POST['unique_id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['unique_id'])) {
+        $uniqueId = $_POST['unique_id'];
 
-    // Define the path to the directory where your images are stored
-    $imageDirectory = 'image/';
+        // Fetch registration image data from the database based on the unique ID
+        $imageQuery = "SELECT reg_img FROM users WHERE unique_id = '$uniqueId'";
+        $result = mysqli_query($conn, $imageQuery);
 
-    // Construct the full file path based on the unique ID (you may need to adjust the filename logic)
-    $filePath = $imageDirectory . $uniqueId . '.jpg'; // Adjust the file extension as needed
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
 
-    // Check if the file exists
-    if (file_exists($filePath)) {
-        // Determine the MIME type of the image
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $filePath);
-        finfo_close($finfo);
+            // Check if the registration image exists
+            if ($row && isset($row['reg_img'])) {
+                $imageData = $row['reg_img'];
 
-        // Send the appropriate content type header
-        header("Content-Type: $mimeType");
-
-        // Output the image file
-        readfile($filePath);
-        exit; // Terminate script execution after sending the image
+                // Send appropriate headers and the registration image data
+                header('Content-Type: image/jpeg');
+                echo base64_decode($imageData);
+                exit();
+            } else {
+                // Registration image not found
+                echo 'Registration image not found for unique ID: ' . $uniqueId;
+            }
+        } else {
+            // Query failed
+            echo 'Failed to fetch registration image. Error: ' . mysqli_error($conn);
+        }
     } else {
-        // Image not found, you can handle this case (e.g., show a default image)
-        header('Content-type: image/jpeg'); // Send a content type even for default images
-        readfile('path_to_default_image.jpg'); // Replace with your default image path
-        exit; // Terminate script execution
+        // Unique ID not provided
+        echo 'Unique ID not provided';
     }
+} else {
+    // Invalid request method
+    echo 'Invalid request method';
 }
+?>

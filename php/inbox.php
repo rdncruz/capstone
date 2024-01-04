@@ -6,10 +6,14 @@
     $sql = "";
 
     if($userType === 'seller') {
-        $sql = "SELECT * FROM users WHERE NOT unique_id = {$outgoing_id} AND role = 'seller'";
+        $sql = "SELECT DISTINCT users.* FROM users
+                INNER JOIN messages ON users.unique_id = messages.outgoing_msg_id OR users.unique_id = messages.incoming_msg_id
+                WHERE (messages.incoming_msg_id = {$outgoing_id} OR messages.outgoing_msg_id = {$outgoing_id}) AND users.role = 'seller'";
     }
     else {
-        $sql = "SELECT * FROM users WHERE NOT unique_id = {$outgoing_id} AND role = 'user'";
+        $sql = "SELECT DISTINCT users.* FROM users
+        INNER JOIN messages ON users.unique_id = messages.outgoing_msg_id OR users.unique_id = messages.incoming_msg_id
+        WHERE (messages.incoming_msg_id = {$outgoing_id} OR messages.outgoing_msg_id = {$outgoing_id}) AND users.role = 'user'";
     }
     $query = mysqli_query($conn, $sql);
     $output = "";
@@ -23,5 +27,3 @@
 
     echo $output;
 ?>
-
-

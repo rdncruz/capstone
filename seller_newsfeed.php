@@ -58,7 +58,7 @@
     <section id="sidebar">
         <a href="#" class="logo">
             <i class='bx bxs-store'></i>
-            <span class="text"><?php echo $row['username']; ?></span>
+            <span class="text"><?php echo $row['shop_name']; ?></span>
         </a>
         <ul class="sidebar-menu">
             <li>
@@ -109,17 +109,14 @@
     <section id="container">
         <nav class="custom-nav">
 			<i class='bx bx-menu' ></i>
-		
+                  
 			<form action="#">
 				<div class="form-input">
 					<!---->
 				</div>
 			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<a href="#" class="notification">
-				<i class='bx bxs-bell' ></i>
-				<span class="num">8</span>
+			<a href="seller_profile.php" style="font-size: 30px;">
+				<i class='bx bxs-cog' ></i>
 			</a>
 			<a href="#" class="profile">
                 <img src="./image/<?php echo $row['img']; ?>" alt="">
@@ -133,6 +130,7 @@
                 <header>Create Post</header>
                 <form id="postForm" action="php/add_post.php" method="POST" enctype="multipart/form-data">
 
+
                   <div class="content">
                   <img src="./image/<?php echo $row['img']; ?>" alt="">
                     <div class="details">
@@ -145,7 +143,12 @@
                     <p>Add to Your Post</p>
                     <ul class="list">
                     
-                    <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg" required>
+                   
+                            <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
+                            <label for="video">Video:</label>
+                            <input type="file" name="video" accept="video/mp4" >
+                        
+
 
                     </ul>
                   </div>
@@ -162,7 +165,7 @@
 // Assuming you have established a database connection
 
 // Fetch post details from the database (replace with your actual SQL query)
-$sql = "SELECT * FROM posting"; // Modify the query accordingly
+$sql = "SELECT * FROM posting WHERE unique_id = '{$unique_id}'"; // Modify the query accordingly
 $result = mysqli_query($conn, $sql);
 
 if ($result && mysqli_num_rows($result) > 0) {

@@ -51,6 +51,7 @@
         <ul class="sidebar-menu">
             <li>
                 <a href="home.php">
+                    
                     <i class='bx bx-home' ></i>
                     <span class="text">Home</span>
                 </a>
@@ -107,25 +108,16 @@
 			<form action="#">
 				<!---->
 			</form>
+            <a href="user_profile.php" style="font-size: 30px;">
+				<i class='bx bxs-cog' ></i>
+				
+			</a>
 			
 			<a href="#" class="profile">
 				<img src="./image/<?php echo $row['img']; ?>" alt="">
 			</a>
 		</nav>
         <main>
-            <div class="head-title">
-				<div class="left">
-					<h1>Dashboard</h1>
-					<ul class="breadcrumb">
-						
-					</ul>
-				</div>
-				<a href="#" class="btn-download">
-					<i class='bx bxs-cloud-download' ></i>
-					<span class="text">Download PDF</span>
-				</a>
-			</div>
-
             <ul class="box-info">
 				<li>
 					<i class='bx bxs-calendar-check' ></i>
@@ -179,11 +171,17 @@
                         <?php
                             require './php/config.php';
                             $query = "SELECT checkout.*, products.name as product_name, users.shop_name as seller_shop_name
-                                    FROM checkout 
-                                    INNER JOIN products ON checkout.product_id = products.product_id 
-                                    INNER JOIN users ON products.unique_id = users.unique_id 
-                                    WHERE checkout.unique_id = {$_SESSION['unique_id']}
-                                    ORDER BY checkout.id DESC";
+        FROM checkout 
+        INNER JOIN products ON checkout.product_id = products.product_id 
+        INNER JOIN users ON products.unique_id = users.unique_id 
+        WHERE checkout.unique_id = {$_SESSION['unique_id']}
+        ORDER BY
+            CASE 
+                WHEN checkout.status = 'Delivered' THEN 1
+                WHEN checkout.status = 'Pending' THEN 2
+                ELSE 3
+            END,
+            checkout.id DESC";
                             $query_run = mysqli_query($conn, $query);
                             if (mysqli_num_rows($query_run) > 0) {
                                 foreach ($query_run as $order) {
@@ -194,16 +192,18 @@
                                         <td><?= $order['seller_shop_name'] ?></td>
                                         <td><?= $order['product_name'] ?></td>
                                         <td><?= $order['quantity'] ?></td>
-                                        <td><?= $order['price'] ?></td>
+                                        <td>₱<?= $order['price'] ?></td>
                                         <td><?= $order['order_date'] ?></td>
                                         <td><?= $order['status'] ?></td>
                                         <td>
                                         <button type="button" class="btn btn-danger rate-now-btn"
-        data-toggle="modal"
-        data-target="#form"
-        data-product-id="<?= $order['product_id'] ?>"
-        data-product-name="<?= $order['product_name'] ?>"
-        data-unique-id="<?= $_SESSION['unique_id'] ?>">Rate Now</button>
+                                            data-toggle="modal"
+                                            data-target="#form"
+                                            data-product-id="<?= $order['product_id'] ?>"
+                                            data-product-name="<?= $order['product_name'] ?>"
+                                            data-unique-id="<?= $_SESSION['unique_id'] ?>"
+                                            data-checkout-id="<?= $order['checkout_id'] ?>" 
+                                            <?php if ($order['status'] !== 'Delivered') echo 'disabled'; ?>>Rate Now</button>
 
                                         </td>
                                     </tr>
@@ -218,6 +218,7 @@
             </div>
             <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <input type="hidden" id="unique_id" name="unique_id" value="<?php echo isset($_SESSION['unique_id']) ? $_SESSION['unique_id'] : ''; ?>">
+            <input type="hidden" id="checkout_id" name="checkout_id" value="">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                     <div class="text-right cross" data-dismiss="modal">
@@ -270,47 +271,50 @@
         var productId = $(this).data('product-id');
         var productName = $(this).data('product-name');
         var uniqueId = $(this).data('unique-id');
+        var checkoutId = $(this).data('checkout-id'); // Retrieve checkout_id
 
-        // Set the product ID, product name, and unique ID in the modal
+        // Set the product ID, product name, unique ID, and checkout ID in the modal
         $("#modalProductId").text(productId);
         $("#modalProductName").text(productName);
         $("#unique_id").val(uniqueId);
-    });
-
-    $(".cross").click(function () {
-        $("#form").modal("hide");
+        $("#checkout_id").val(checkoutId); // Set the checkout_id in a hidden field
     });
 
     $("#submitRatingBtn").click(function () {
-        var uniqueId = $("#unique_id").val();
-        var productId = $("#modalProductId").text();
-        var rating = $("input[name='rating']:checked").val();
-        var comment = $("#commentTextArea").val();
+    var uniqueId = $("#unique_id").val();
+    var checkoutId = $("#checkout_id").val();
+    var productId = $("#modalProductId").text();
+    var rating = $("input[name='rating']:checked").val();
+    var comment = $("#commentTextArea").val();
 
-        $.ajax({
-            type: "POST",
-            url: "./php/submit_rating.php",
-            data: {
-                uniqueId: uniqueId,
-                productId: productId,
-                rating: rating,
-                comment: comment
-            },
-            success: function (response) {
-                if (response === "success") {
-                    // Rating submitted successfully
-                    alert("Rating submitted successfully!");
-                    $("#form").modal("hide");
-                } else {
-                    // Error in the database query
-                    console.error("Error:", response);
-                }
-            },
-            error: function (error) {
-                console.error("Error:", error);
+    $.ajax({
+        type: "POST",
+        url: "./php/submit_rating.php",
+        data: {
+            uniqueId: uniqueId,
+            checkoutId: checkoutId,
+            productId: productId,
+            rating: rating,
+            comment: comment
+        },
+        success: function (response) {
+            if (response === "success") {
+                // Rating submitted successfully
+                alert("Rating submitted successfully!");
+                $("#form").modal("hide");
+
+                // Reload the page to reflect the changes
+                location.reload();
+            } else {
+                // Error in the database query
+                console.error("Error:", response);
             }
-        });
+        },
+        error: function (error) {
+            console.error("Error:", error);
+        }
     });
+});
 });
 
 

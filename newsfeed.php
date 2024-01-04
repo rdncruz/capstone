@@ -109,7 +109,9 @@
 			<form action="#">
 				<!---->
 			</form>
-			
+			<a href="user_profile.php" style="font-size: 30px;">
+				<i class='bx bxs-cog' ></i>
+			</a>
 			<a href="#" class="profile">
 				<img src="./image/<?php echo $row['img']; ?>" alt="">
 			</a>
@@ -122,14 +124,14 @@
 // Assuming you have established a database connection
 
 // Fetch post details from the database (replace with your actual SQL query)
-$sql = "SELECT * FROM posting"; // Modify the query accordingly
+$sql = "SELECT * FROM posting ORDER BY id DESC"; // Modify the query accordingly
 $result = mysqli_query($conn, $sql);
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($post = mysqli_fetch_assoc($result)) {
         // Fetch user details based on the unique_id from the post
         $user_id = $post['unique_id'];
-        $user_query = "SELECT * FROM users WHERE unique_id = $user_id";
+        $user_query = "SELECT * FROM users WHERE unique_id = $user_id" ;
         $user_result = mysqli_query($conn, $user_query);
 
         if ($user_result && $user = mysqli_fetch_assoc($user_result)) {
@@ -140,7 +142,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                         <img src="./image/<?php echo $user['img']; ?>" />
                         <div>
                             <div>
-                                <span class="author-name"><?php echo $post['username']; ?></span>
+                                <span class="author-name"><?php echo $user['shop_name']; ?></span>
                                 <i class="verified-icon"></i>
                             </div>
                             <div class="details">

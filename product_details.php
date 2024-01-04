@@ -73,6 +73,22 @@ if(isset($_GET['product_id'])) {
 } else {
     echo "Product ID is not set in the URL.";
 }
+
+if (isset($fetch_product)) {
+    $rating_info = getRatingInfo($conn, $product_id);
+
+    // Retrieve product name from the products table
+    $select_product_name = mysqli_query($conn, "SELECT name FROM products WHERE product_id = '$product_id'");
+    $product_name = "";
+    
+    if ($select_product_name && mysqli_num_rows($select_product_name) > 0) {
+        $product_data = mysqli_fetch_assoc($select_product_name);
+        $product_name = $product_data['name'];
+    }
+
+    // Retrieve reviews for the product
+    $select_reviews = mysqli_query($conn, "SELECT * FROM review WHERE product_id = '$product_id'");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,6 +111,11 @@ if(isset($_GET['product_id'])) {
     <link rel="stylesheet" href="css/style.css">
     
     <link rel="stylesheet" href="css/shopping.css">
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
     
 </head>
 <body>
@@ -111,7 +132,7 @@ if(isset($_GET['product_id'])) {
                 </a>
             </li>
             <li>
-                <a href="userfeed.php">
+                <a href="newsfeed.php">
                     <i class='bx bx-home' ></i>
                     <span class="text">Newsfeed</span>
                 </a>
@@ -176,7 +197,9 @@ if(isset($_GET['product_id'])) {
                 echo "<span class=\"badge text-secondary border border-secondary rounded-circle\" style=\"padding-bottom: 2px;\">$count</span>";
                 ?>
             </a>
-
+            <a href="user_profile.php" style="font-size: 30px;">
+				<i class='bx bxs-cog' ></i>
+			</a>
 			<a href="#" class="profile">
 				<img src="./image/<?php echo $row['img']; ?>" alt="">
 			</a>
@@ -221,23 +244,7 @@ if(isset($_GET['product_id'])) {
                                 <button type="submit" class="btn btn-primary px-3" name="add_to_cart"> <i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                                 <input type="hidden" name="id" value=" ">
                             </div>
-                            <div class="d-flex pt-2">
-                                <strong class="text-dark mr-2">Share on:</strong>
-                                <div class="d-inline-flex">
-                                    <a class="text-dark px-2" href="">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a class="text-dark px-2" href="">
-                                        <i class="fab fa-twitter"></i>
-                                    </a>
-                                    <a class="text-dark px-2" href="">
-                                        <i class="fab fa-linkedin-in"></i>
-                                    </a>
-                                    <a class="text-dark px-2" href="">
-                                        <i class="fab fa-pinterest"></i>
-                                    </a>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -245,75 +252,144 @@ if(isset($_GET['product_id'])) {
                     <div class="col">
                         <div class="bg-light p-30">
                             <div class="nav nav-tabs mb-4">
-                                <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                                <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">Information</a>
-                                <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+                                <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Shop Details</a>
+                                
+                                <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Reviews (<?php echo mysqli_num_rows($select_reviews); ?>)</a>
                             </div>
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-pane-1">
-                                    <h4 class="mb-3">Product Description</h4>
-                                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
-                                    <p>Dolore magna est eirmod sanctus dolor, amet diam et eirmod et ipsum. Amet dolore tempor consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita clita diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum. Ea erat sed et diam takimata sed justo. Magna takimata justo et amet magna et.</p>
-                                </div>
-                                <div class="tab-pane fade" id="tab-pane-2">
-                                    <h4 class="mb-3">Additional Information</h4>
-                                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item px-0">
-                                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                                </li>
-                                            </ul> 
-                                        </div>
-                                        <div class="col-md-6">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item px-0">
-                                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                                </li>
-                                            </ul> 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="tab-pane-3">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h4 class="mb-4">1 review for "Product Name"</h4>
-                                            <div class="media mb-4" style="width: 120vh;">
-                                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px;">
-                                                <div class="media-body">
-                                                    <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                                    <div class="text-primary mb-2">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star-half-alt"></i>
-                                                        <i class="far fa-star"></i>
+                                    <?php 
+                                   if (isset($fetch_product)) {
+                                    $rating_info = getRatingInfo($conn, $product_id);
+                                
+                                    // Retrieve shop owner's unique_id using product_id
+                                    $product_id = $fetch_product['product_id'];
+                                    $select_shop_owner = mysqli_query($conn, "SELECT unique_id FROM products WHERE product_id = '$product_id'");
+                                    $shop_owner_data = mysqli_fetch_assoc($select_shop_owner);
+                                
+                                    if ($shop_owner_data) {
+                                        $shop_owner_unique_id = $shop_owner_data['unique_id'];
+                                
+                                        // Retrieve shop owner details using unique_id
+                                        $select_shop_owner_details = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = '$shop_owner_unique_id'");
+                                        $shop_owner_details = mysqli_fetch_assoc($select_shop_owner_details);
+                                
+                                        // Your existing code for displaying product details goes here...
+                                
+                                        // Your existing code for displaying shop details goes here...
+                                        ?>
+                                        
+
+                                    <div class="container-fluid">
+                                        <div class="row px-xl-5">
+                                            <div class="col-lg-8">
+                                            
+                                                <div class="bg-light p-30 mb-5">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Shop Name</label>
+                                                            <input class="form-control" type="text" value="<?php echo $shop_owner_details['shop_name']; ?>" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Status</label>
+                                                            <input class="form-control" type="text" value="<?php echo $shop_owner_details['status']; ?>" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Full Name</label>
+                                                            <input class="form-control" type="text" value="<?php echo $shop_owner_details['fname']; ?> <?php echo $shop_owner_details['lname']; ?>" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>E-mail</label>
+                                                            <input class="form-control" type="text" value="<?php echo $shop_owner_details['email']; ?>" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Address Line 1</label>
+                                                            <input class="form-control" type="text" placeholder="123 Street">
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>City</label>
+                                                            <input class="form-control" type="text" value="<?php echo $shop_owner_details['address']; ?>" readonly>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label id="messageLabel" style="cursor: pointer;">
+                                                                <i class="fas fa-envelope"></i> Message us
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" id="shipto">
+                                                                <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">View Shop Location</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsiam amet duo labore stet elitr ea clita ipsum, tempor labore accuiam amet duo labore stet elitr ea clita ipsum, tempor labore accuum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                                </div>
+                                                <div class="collapse mb-5" id="shipping-address">
+                                                    
+                                                   
+                                                        <div id="map"></div>
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                
+                                                <div class="bg-light p-30 mb-5">
+                                                    <img src="image/Orange_Minimalist_Fishing_Logo.png" alt="Order Total Image" class="img-fluid">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php
+                                    }
+                                }
+?>
+
                                 </div>
+                                
+                                <div class="tab-pane fade" id="tab-pane-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="mb-4"><?php echo mysqli_num_rows($select_reviews); ?> review(s) for "<?php echo $fetch_product['name']; ?>"</h4>
+                                            <?php
+                                            while ($review = mysqli_fetch_assoc($select_reviews)) {
+                                                // Retrieve username from the users table
+                                                $review_user_id = $review['unique_id']; // Assuming unique_id is used in the review table
+                                                $select_username = mysqli_query($conn, "SELECT username FROM users WHERE unique_id = '$review_user_id'");
+                                                $username = "";
+
+                                                if ($select_username && mysqli_num_rows($select_username) > 0) {
+                                                    $user_data = mysqli_fetch_assoc($select_username);
+                                                    $username = $user_data['username'];
+                                                }
+                                            ?>
+                                                <div class="media mb-4" style="width: 120vh;">
+                                                
+                                                    <img src="./image/<?php echo $row['img']; ?>" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px;">
+                                                    <div class="media-body">
+                                                        <h6><?php echo $username; ?><small> - <i><?php echo date('Y-m-d', strtotime($review['review_date'])); ?></i></small></h6>
+                                                        <div class="text-primary mb-2">
+                                                            <?php
+                                                            $stars = $review['rating'];
+                                                            for ($i = 1; $i <= 5; $i++) {
+                                                                if ($i <= $stars) {
+                                                                    echo '<i class="fas fa-star"></i>';
+                                                                } else {
+                                                                    echo '<i class="far fa-star"></i>';
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                        <p><?php echo $review['description']; ?></p>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -328,9 +404,58 @@ if(isset($_GET['product_id'])) {
         </main>
     </section>
     <script src="javascript/design.js"></script>
-
+    <script src="javascript/chat.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT7g_YV4I7cksILtC4ed1TfN7JIpJ8I3Q&callback=initMap" async defer></script>
+
+    <?php
+// Get the user's location from the database (assuming you have latitude and longitude columns)
+    $sql_location = mysqli_query($conn, "SELECT lat, lng FROM location WHERE unique_id = '{$shop_owner_unique_id}'");
+    if (mysqli_num_rows($sql_location) > 0) {
+        $location_data = mysqli_fetch_assoc($sql_location);
+        $latitude = $location_data['lat'];
+        $longitude = $location_data['lng'];
+    } else {
+        // Default coordinates if not found in the database
+        $latitude = 37.7749;
+        $longitude = -122.4194;
+    }
+    ?>
+    <script>
+    $(document).ready(function(){
+        $('#messageLabel').click(function(){
+            // Make sure to replace 'seller_id' with the correct parameter used in chat.php
+            window.location.href = 'chat.php?user_id=<?php echo $shop_owner_unique_id; ?>';
+        });
+    });
+</script>
+
+
+    <script>
+        var map;
+        var markers = [];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: <?php echo $latitude; ?>, lng: <?php echo $longitude; ?> },
+                zoom: 17.0
+            });
+
+            // Add a custom icon for the user's location marker
+            var userMarker = new google.maps.Marker({
+                position: { lat: <?php echo $latitude; ?>, lng: <?php echo $longitude; ?> },
+                map: map,
+                title: 'Your Location',
+                icon: {
+                    url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                }
+            });
+        }
+
+       
+    </script>
+
 
 </body>
 </html>
