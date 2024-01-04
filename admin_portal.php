@@ -143,8 +143,9 @@
                                         ?>
                                         <tr>
                                             <td><?= $seller['unique_id'] ?></td>
-                                            <td><?= $seller['fname'] ?></td>
-                                            <td><?= $seller['lname'] ?></td>
+                                            <td><?= $seller['shop_name'] ?></td>
+                                            <td><?= $seller['fname'] ?> <?= $seller['lname'] ?></td>
+                                            
                                             <td><?= $seller['address'] ?></td>
                                             <td><?= $seller['verification_status'] ?></td>
                                             <td>
