@@ -171,14 +171,6 @@ if (mysqli_num_rows($sql) > 0) {
                                     <label class="form-control"> <?php echo $row['email'];?> </label> 
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>Mobile No</label>
-                                    <input class="form-control" type="text" placeholder="+69-00-0000-0000">
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label>Address Line</label>
-                                    <input class="form-control" type="text" placeholder="123 Street">
-                                </div>
-                                <div class="col-md-6 form-group">
                                     <label>City</label>
                                     <label class="form-control"> <?php echo $row['address'];?> </label> 
                                 </div>
@@ -235,13 +227,13 @@ if (mysqli_num_rows($sql) > 0) {
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <h6 class="font-weight-medium">Shipping</h6>
-                                        <h6 class="font-weight-medium">₱50</h6>
+                                        <h6 class="font-weight-medium">₱0.00</h6>
                                     </div>
                                 </div>
                                 <div class="pt-2">
                                     <div class="d-flex justify-content-between mt-2">
                                         <h5>Total</h5>
-                                        <h5>₱<?php echo $subtotal + 50; ?></h5>
+                                        <h5>₱<?php echo $subtotal; ?></h5>
                                     </div>
                                 </div>
                             </div>
