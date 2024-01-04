@@ -148,7 +148,14 @@
                                             <td><?= $seller['address'] ?></td>
                                             <td><?= $seller['verification_status'] ?></td>
                                             <td>
-                                            <button type="button" value="<?=$seller['unique_id'];?>" class="viewStudentBts btn btn-info btn-sm">View</button>
+                                            <?php
+                                                if (!empty($seller['reg_img'])) {
+                                                    $imagePath = '../image/' . $seller['reg_img'];
+                                                    echo '<img src="' . $imagePath . '" alt="Seller Image" class="img-fluid">';
+                                                } else {
+                                                    echo 'No Image';
+                                                }
+                                            ?>
                                             </td>
                                             <td>
                                                 <button type="button" value="<?=$seller['unique_id'];?>" class="editStudentBtn btn btn-success btn-sm">Send OTP</button>
