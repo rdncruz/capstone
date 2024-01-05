@@ -11,18 +11,7 @@
   $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = '{$unique_id}'");
   if (mysqli_num_rows($sql) > 0) {
       $row = mysqli_fetch_assoc($sql);
-      if($row) {
-          $_SESSION['verification_status'] = $row ['verification_status'];
-          if ($row['role'] === 'user') {
-              if($row['verification_status'] != 'Verified') {
-                  header("Location: verify.php");
-              }
-          } 
-          else {
-              // Redirect to login.php if the user is not a seller
-              header("Location: index.php");
-          }
-      }
+      
   }
 ?>
 <!DOCTYPE html>
@@ -48,12 +37,17 @@
   
   <link rel="stylesheet" href="css/style.css">
   <style>
+    #map {
+            height: 400px;
+        }
     .img-account-profile {
     height: 10rem;
 }
 .rounded-circle {
     border-radius: 50% !important;
+    
 }
+
   </style>
 </head>     
 <body data-user-type="seller">
@@ -182,7 +176,14 @@
                                 <input class="form-control" id="newPassword" type="password" placeholder="Enter your new password">
                             </div>
                             <button class="btn btn-primary" type="button" id="saveChangesBtn">Save Changes</button>
-
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="shipto">
+                                <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">View Your Location</label>
+                            </div>
+                            <div class="collapse mb-5" id="shipping-address">
+                              
+                            <div id="map"></div>
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -193,6 +194,85 @@
     </main>
   </section>
 	<script src="javascript/design.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBT7g_YV4I7cksILtC4ed1TfN7JIpJ8I3Q&callback=initMap" async defer></script>
+  
+    
+    <?php
+// Get the user's location from the database (assuming you have latitude and longitude columns)
+    $sql_location = mysqli_query($conn, "SELECT lat, lng FROM location WHERE unique_id = '{$unique_id}'");
+    if (mysqli_num_rows($sql_location) > 0) {
+        $location_data = mysqli_fetch_assoc($sql_location);
+        $latitude = $location_data['lat'];
+        $longitude = $location_data['lng'];
+    } else {
+        // Default coordinates if not found in the database
+        $latitude = 37.7749;
+        $longitude = -122.4194;
+    }
+    ?>
+
+<!-- ... your HTML code ... -->
+
+<script>
+    var map;
+    var markers = [];
+
+    function initMap() {
+        console.log("Map initialized");  // Add this line for debugging
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: <?php echo $latitude; ?>, lng: <?php echo $longitude; ?> },
+            zoom: 17.0
+        });
+
+        // Add a custom icon for the user's location marker
+        var userMarker = new google.maps.Marker({
+            position: { lat: <?php echo $latitude; ?>, lng: <?php echo $longitude; ?> },
+            map: map,
+            title: 'Your Location',
+            icon: {
+                url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            },
+            draggable: true  // Make the marker draggable
+        });
+
+        // Event listener for dragend event of the marker
+        userMarker.addListener('dragend', function(event) {
+            var updatedLat = event.latLng.lat();
+            var updatedLng = event.latLng.lng();
+
+            // Send the updated location to the server (you may use AJAX for this)
+            updateLocation(updatedLat, updatedLng);
+        });
+    }
+
+    // Function to update the user's location on the server
+    function updateLocation(lat, lng) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'php/update_location.php', true);
+
+        // Send the latitude and longitude as parameters
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        var params = 'lat=' + lat + '&lng=' + lng;
+        xhr.send(params);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 'success') {
+                    console.log('Location updated successfully!');
+                } else {
+                    console.log('Failed to update location. Please try again.');
+                }
+            }
+        };
+    }
+</script>
+
+<!-- ... your remaining HTML code ... -->
+
   <script>
 function displayImage(input) {
     var profileImage = document.getElementById('profileImage');
