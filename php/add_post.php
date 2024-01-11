@@ -22,10 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (in_array($img_ext, $allowed_img_extensions)) {
             $time = time();
             $new_img_name = $time . $img_name;
-            $upload_path_img = "image/" . $new_img_name; // Store relative path
-    
-            if (move_uploaded_file($img_tmp_name, "../" . $upload_path_img)) {
-                // Image uploaded successfully
+            $upload_path_img =  $new_img_name; // Store relative path
+       
+            if (move_uploaded_file($img_tmp_name, "../image/" . $upload_path_img)) {
+                
+                $image_filename = $new_img_name;
             } else {
                 echo "Error uploading image. Please try again.";
                 exit();
@@ -40,36 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Handling video upload
-    if (isset($_FILES['video']) && $_FILES['video']['error'] === 0) {
-        $video_name = $_FILES['video']['name'];
-        $video_tmp_name = $_FILES['video']['tmp_name'];
-        $video_size = $_FILES['video']['size'];
-    
-        $video_ext = pathinfo($video_name, PATHINFO_EXTENSION);
-        $allowed_video_extensions = array("mp4");
-    
-        if (in_array($video_ext, $allowed_video_extensions)) {
-            $time = time();
-            $new_video_name = $time . $video_name;
-            $upload_path_video = "video/" . $new_video_name; // Store relative path
-    
-            if (move_uploaded_file($video_tmp_name, "../" . $upload_path_video)) {
-                // Video uploaded successfully
-            } else {
-                echo "Error uploading video. Please try again.";
-                exit();
-            }
-        } else {
-            echo "Invalid video file extension. Allowed extension is mp4.";
-            exit();
-        }
-    } else if (isset($_FILES['video']) && $_FILES['video']['error'] !== 4) {
-        echo "Error uploading video. Error code: " . $_FILES['video']['error'];
-        exit();
-    }
+
 
     // Inserting paths into the database
-    $sql = "INSERT INTO posting (unique_id, username, content, img, video, date) VALUES ($user_id, '$username', '$content', '$upload_path_img', '$upload_path_video', '$timestamp')";
+    $sql = "INSERT INTO posting (unique_id, username, content, img, date) VALUES ($user_id, '$username', '$content', '$image_filename', '$timestamp')";
 
     if ($conn->query($sql) === TRUE) {
         echo "Post added successfully";

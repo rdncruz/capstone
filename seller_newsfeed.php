@@ -165,7 +165,7 @@
 // Assuming you have established a database connection
 
 // Fetch post details from the database (replace with your actual SQL query)
-$sql = "SELECT * FROM posting WHERE unique_id = '{$unique_id}'"; // Modify the query accordingly
+$sql = "SELECT * FROM posting WHERE unique_id = '{$unique_id}' ORDER BY id DESC"; // Modify the query accordingly
 $result = mysqli_query($conn, $sql);
 
 if ($result && mysqli_num_rows($result) > 0) {
