@@ -108,7 +108,7 @@
                             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <img id="sellerImage" src="" alt="Seller Image" class="img-fluid zoom-image" style="max-height: 100px;">
+                            <img id="sellerImage" src="" alt="Seller Image" class="img-fluid zoom-image" style="max-height: 800px;">
                         </div>
                     </div>
                 </div>
