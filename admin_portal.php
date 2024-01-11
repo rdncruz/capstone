@@ -98,21 +98,22 @@
 			</a>
 		</nav>
         <main>
-            <div id="imageContainer"></div>
+          
             <!-- Modal -->
-            <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+            <!-- Modal -->
+            <div id="imageModal" class="modal" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="imageModalLabel">Seller Image</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <img id="sellerImage" src="" alt="Seller Image" class="img-fluid">
+                            <img id="sellerImage" src="" alt="Seller Image" class="img-fluid zoom-image" style="max-height: 700px;">
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="container mt-4">
                 <div class="row">
                     <div class="col-md-12">
@@ -179,6 +180,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+
 <script src="javascript/admin.js"></script>
 <script src="javascript/design.js"></script>
 <script>
@@ -215,10 +218,24 @@
             // Set the image source in the modal
             $("#sellerImage").attr("src", imagePath);
 
-            // Show the modal
-            $("#imageModal").modal("show");
+            // Show the native dialog
+            var dialog = document.getElementById('imageModal');
+            dialog.showModal();
+
+            // Initialize Medium Zoom on the modal image
+            
+        });
+
+        // Close the native dialog when clicking outside the image
+        $('#imageModal').on('click', function (event) {
+            var dialog = document.getElementById('imageModal');
+            if (event.target === dialog) {
+                dialog.close();
+            }
         });
     });
 </script>
+
+
 </body>
 </html>
