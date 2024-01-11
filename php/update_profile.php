@@ -19,8 +19,25 @@ $address = mysqli_real_escape_string($conn, $_POST['address']);
 $email = mysqli_real_escape_string($conn, $_POST['email']);
 
 // Check if image is being uploaded
-if (isset($_FILES['image'])) {
-    // ... (rest of the image upload code remains unchanged)
+if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    $img_name = $_FILES['image']['name'];
+    $img_tmp_name = $_FILES['image']['tmp_name'];
+    $img_size = $_FILES['image']['size'];
+
+    // Perform additional checks for file type, extension, and size as needed
+
+    $time = time();
+    $new_img_name = $time . $img_name;
+    $upload_path = "../image/" . $new_img_name;
+
+    if (move_uploaded_file($img_tmp_name, $upload_path)) {
+        // Update the image filename in the database only if the upload was successful
+        $image_filename = $new_img_name;
+    } else {
+        $response = ['status' => 'error', 'message' => 'Image upload failed.'];
+        echo json_encode($response);
+        exit();
+    }
 } else {
     // If no image is being uploaded, retain the existing image filename in the database
     $image_filename_query = mysqli_query($conn, "SELECT img FROM users WHERE unique_id = '$unique_id'");
@@ -35,8 +52,8 @@ if (!empty($_POST['newPassword'])) {
 
     // Hash the new password before updating the database
     $newPassword = mysqli_real_escape_string($conn, $_POST['newPassword']);
-    $encrypt_pass = md5($newPassword);
-    
+    $encrypt_pass = password_hash($newPassword, PASSWORD_DEFAULT);
+
     // Update the database with the new password
     $update_query = "UPDATE users SET password = '$encrypt_pass' WHERE unique_id = '$unique_id'";
     $result = mysqli_query($conn, $update_query);
@@ -48,7 +65,7 @@ if (!empty($_POST['newPassword'])) {
     }
 }
 
-// Update the database with the new information (excluding password if not provided)
+// Update the database with the new information (including the updated image filename)
 $update_query = "UPDATE users SET 
                 username = '$username',
                 fname = '$fname',
