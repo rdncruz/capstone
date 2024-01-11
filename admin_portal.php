@@ -148,11 +148,11 @@
                                             
                                             <td><?= $seller['address'] ?></td>
                                             <td><?= $seller['verification_status'] ?></td>
-                                            <td>
+                                            <td class="image-cell">
                                             <?php
                                                 if (!empty($seller['reg_img'])) {
-                                                    $imagePath = '../image/' . $seller['reg_img'];
-                                                    echo '<img src="' . $imagePath . '" alt="Seller Image" class="img-fluid">';
+                                                    $imagePath = './image/' . $seller['reg_img'];
+                                                    echo '<img src="' . $imagePath . '" alt="Seller Image" class="img-fluid clickable-image" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="' . $imagePath . '"style="max-width: 50px; max-height: auto;">';
                                                 } else {
                                                     echo 'No Image';
                                                 }
@@ -202,6 +202,21 @@
                     alert('Failed to fetch the image.');
                 }
             });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Attach a click event handler to the clickable images
+        $(".clickable-image").click(function() {
+            // Get the image source from the data attribute
+            var imagePath = $(this).data("image");
+
+            // Set the image source in the modal
+            $("#sellerImage").attr("src", imagePath);
+
+            // Show the modal
+            $("#imageModal").modal("show");
         });
     });
 </script>
