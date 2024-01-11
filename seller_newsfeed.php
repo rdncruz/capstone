@@ -145,8 +145,7 @@
                     
                    
                             <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-                            <label for="video">Video:</label>
-                            <input type="file" name="video" accept="video/mp4" >
+                            
                         
 
 
