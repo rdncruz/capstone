@@ -191,7 +191,7 @@ if ($result && mysqli_num_rows($result) > 0) {
                     <img src="./image/<?php echo $row['img']?>" />
                     <div>
                         <div>
-                            <span class="author-name"><?php echo $post['username']; ?></span>
+                            <span class="author-name"><?php echo $post['shop_name']; ?></span>
                             <i class="verified-icon"></i>
                         </div>
                         <div class="details">
