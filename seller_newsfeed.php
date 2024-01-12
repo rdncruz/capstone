@@ -45,8 +45,23 @@
             margin-top: 1;
             padding: 0;
         }
-    </style>
-    <!-- Include the Bootstrap stylesheet -->
+  
+        .card.post {
+        overflow: hidden;
+        margin-bottom: 20px; /* Add margin between cards */
+    }
+
+    .post-image {
+        height: 700px; /* Set your desired fixed height */
+        overflow: hidden;
+    }
+
+    .post-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* This property ensures the image covers the entire container */
+    }
+</style><!-- Include the Bootstrap stylesheet -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
@@ -144,7 +159,7 @@
                     <ul class="list">
                     
                    
-                            <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg">
+                            <input type="file" name="media" id="media" accept="image/*, video/*" required>
                             
                         
 
@@ -188,17 +203,27 @@ if ($result && mysqli_num_rows($result) > 0) {
                 </div>
                 <i class="post-menu-icon"></i>
             </div>
-            <p class="post-body"><?php echo $post['content']; ?></p>
-            <a class="post-image">
-                <img src="./image/<?php echo $post['img']; ?>" />
-                <div class="excerpt">
-                    <!-- Add additional details as needed -->
-                    <div class="post-info-icon-wrap">
-                        <i class="post-info-icon"></i>
-                    </div>
-                </div>
-            </a>
-            <!-- Rest of the HTML code remains unchanged -->
+            <?php
+    $maxCharacterCount = 53; // Set your desired character limit
+    $truncatedContent = strlen($post['content']) > $maxCharacterCount ? substr($post['content'], 0, $maxCharacterCount) . "..." : $post['content'];
+    ?>
+            <p class="post-body"><?php echo $truncatedContent; ?></p>
+            <?php if (!empty($post['img'])) : ?>
+                <a class="post-media">
+                    <?php
+                    $mediaPath = "./image/" . $post['img'];
+                    $mediaExtension = pathinfo($mediaPath, PATHINFO_EXTENSION);
+                    if (in_array($mediaExtension, array("jpg", "jpeg", "png", "gif"))) {
+                    ?>
+                        <img src="<?php echo $mediaPath; ?>" />
+                    <?php } elseif (in_array($mediaExtension, array("mp4", "mov", "avi"))) { ?>
+                        <video controls style="width:100%">
+                            <source src="<?php echo $mediaPath; ?>" type="video/<?php echo $mediaExtension; ?>">
+                            Your browser does not support the video tag.
+                        </video>
+                    <?php } ?>
+                </a>
+            <?php endif; ?>
         </div>
 <?php
     }
