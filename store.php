@@ -192,35 +192,35 @@ if(isset($_POST['add_to_cart'])){
                         <!-- Price Start -->
                         <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
                         <div class="bg-light p-4 mb-30">
-                        <form method="post" action="">
-                            <div class="form-group">
-                                <label for="min_price">Min Price</label>
-                                <input type="number" class="form-control" id="min_price" name="min_price" placeholder="Enter min price">
-                            </div>
-                            <div class="form-group">
-                                <label for="max_price">Max Price</label>
-                                <input type="number" class="form-control" id="max_price" name="max_price" placeholder="Enter max price">
-                            </div>
-                            <button type="submit" class="btn btn-primary" name="filter_price">Apply Filter</button>
-                            <button type="submit" class="btn btn-secondary" name="reset_filter">Reset Filter</button>
-                        </form>
-                        </div>
+    <form method="post" action="">
+        <div class="form-group">
+            <label for="min_price">Min Price</label>
+            <input type="text" class="form-control" id="min_price" name="min_price" placeholder="Enter min price" value="<?php echo isset($_POST['min_price']) ? htmlspecialchars($_POST['min_price']) : ''; ?>">
+        </div>
+        <div class="form-group">
+            <label for="max_price">Max Price</label>
+            <input type="text" class="form-control" id="max_price" name="max_price" placeholder="Enter max price" value="<?php echo isset($_POST['max_price']) ? htmlspecialchars($_POST['max_price']) : ''; ?>">
+        </div>
+        <button type="submit" class="btn btn-primary" name="filter_price">Apply Filter</button>
+        <button type="submit" class="btn btn-secondary" name="reset_filter">Reset Filter</button>
+    </form>
+</div>
+
                         <!-- Price End -->
         
-                        <!-- Size Start -->
+                        
                         <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by Shop</span></h5>
                         <div class="bg-light p-4 mb-30">
-                        <form method="post" action="">
+        <form method="post" action="" id="shopFilterForm">
             <div class="form-group">
                 <label for="selected_shop">Select Shop</label>
                 <select class="form-control" id="selected_shop" name="selected_shop">
-
                     <option value="" selected>Select a shop</option>
                     <?php
                     $select_shops = mysqli_query($conn, "SELECT DISTINCT shop_name FROM users WHERE shop_name IS NOT NULL");
                     while ($shop = mysqli_fetch_assoc($select_shops)) {
                         ?>
-                        <option value="<?php echo $shop['shop_name']; ?>"><?php echo $shop['shop_name']; ?></option>
+                        <option value="<?php echo $shop['shop_name']; ?>" <?php echo (isset($_POST['selected_shop']) && $_POST['selected_shop'] === $shop['shop_name']) ? 'selected' : ''; ?>><?php echo $shop['shop_name']; ?></option>
                         <?php
                     }
                     ?>
@@ -228,10 +228,10 @@ if(isset($_POST['add_to_cart'])){
             </div>
             <button type="submit" class="btn btn-primary" name="filter_shop">Apply Shop Filter</button>
             <!-- Add Reset Shop Filter button -->
-            <button type="submit" class="btn btn-secondary" name="reset_shop_filter">Reset Shop Filter</button>
+            <button type="button" class="btn btn-secondary" name="reset_shop_filter" id="resetShopFilter">Reset Shop Filter</button>
         </form>
-                        </div>
-                        <!-- Size End -->
+    </div>
+                       
                     </div>
                     <!-- Shop Sidebar End -->
                     
@@ -242,9 +242,20 @@ if(isset($_POST['add_to_cart'])){
                             
                         <?php
                         $filter_sql = "";
-     
+                        $min_price = '';
+                        $max_price = '';
+                        $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-                        if(isset($_POST['filter_price'])){
+                        // Set the number of products per page
+                        $products_per_page = 6;
+
+                        // Calculate the offset for the SQL query based on the current page
+                        $offset = ($current_page - 1) * $products_per_page;
+
+                        
+
+                        
+                        if (isset($_POST['filter_price'])) {
                             $min_price = mysqli_real_escape_string($conn, $_POST['min_price']);
                             $max_price = mysqli_real_escape_string($conn, $_POST['max_price']);
                         
@@ -255,18 +266,25 @@ if(isset($_POST['add_to_cart'])){
                                 exit();
                             }
                         
-                            $filter_sql = " AND price BETWEEN $min_price AND $max_price";
+                            $filter_sql .= " AND price BETWEEN $min_price AND $max_price";
+                        
+                            // Store filter values in session variables
+                            $_SESSION['min_price'] = $min_price;
+                            $_SESSION['max_price'] = $max_price;
                         }
+                        
+                        // Check for Reset Filter button
                         if (isset($_POST['reset_filter'])) {
-                            // Clear filter values
-                            $min_price = $max_price = "";
+                            // Clear filter values and session variables
+                            $min_price = $max_price = '';
+                            unset($_SESSION['min_price']);
+                            unset($_SESSION['max_price']);
                         }
-
-                      
+                        
+                        // Check for shop filter
+                        $selected_shop = '';
                         if (isset($_POST['filter_shop'])) {
                             $selected_shop = isset($_POST['selected_shop']) ? mysqli_real_escape_string($conn, $_POST['selected_shop']) : '';
-                        
-                            
                         
                             if (!empty($selected_shop)) {
                                 // Apply the shop filter to the SQL query
@@ -274,13 +292,11 @@ if(isset($_POST['add_to_cart'])){
                             }
                         }
                         
-                        
                         // Check for Reset Shop Filter button
                         if (isset($_POST['reset_shop_filter'])) {
                             // Clear the shop filter
                             $selected_shop = '';
                         }
-
                         
                         
                         // Add this line after the $select_products query
@@ -288,8 +304,13 @@ if(isset($_POST['add_to_cart'])){
                         
                         // Check for Reset Shop Filter button
 
-                        $select_products = mysqli_query($conn, "SELECT p.*, u.shop_name FROM `products` p JOIN `users` u ON p.unique_id = u.unique_id WHERE 1 $filter_sql ORDER BY p.id DESC");
+                        $select_products = mysqli_query($conn, "SELECT p.*, u.shop_name FROM `products` p JOIN `users` u ON p.unique_id = u.unique_id WHERE 1 $filter_sql ORDER BY p.id DESC LIMIT $offset, $products_per_page");
+                        $total_products_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM `products` p JOIN `users` u ON p.unique_id = u.unique_id WHERE 1 $filter_sql");
+$total_products_result = mysqli_fetch_assoc($total_products_query);
+$total_products = $total_products_result['total'];
 
+// Calculate the total number of pages
+$totalPages = ceil($total_products / $products_per_page);
 
 // Check for errors
 if (!$select_products) {
@@ -344,17 +365,14 @@ if (!$select_products) {
             };
         };
         ?>
-                            
                             <div class="col-12">
-                               
-                                  <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                  </ul>
-                                
+                                <ul class="pagination justify-content-center">
+                                <?php
+    for ($i = 1; $i <= $totalPages; $i++) {
+        echo "<li class='page-item " . ($i === $current_page ? 'active' : '') . "'><a class='page-link' href='?page=$i'>$i</a></li>";
+    }
+    ?>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -370,6 +388,57 @@ if (!$select_products) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Add the following script to handle resetting filter values -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var minPriceInput = document.getElementById('min_price');
+        var maxPriceInput = document.getElementById('max_price');
+        var filterForm = document.getElementById('filterForm');
+
+        // Validate input values to be non-negative integers
+        minPriceInput.addEventListener('input', function () {
+            validateInput(minPriceInput);
+        });
+
+        maxPriceInput.addEventListener('input', function () {
+            validateInput(maxPriceInput);
+        });
+
+        // Function to validate input as non-negative integers
+        function validateInput(inputElement) {
+            var inputValue = parseInt(inputElement.value, 10);
+            if (isNaN(inputValue) || inputValue < 0) {
+                inputElement.value = '';
+            }
+        }
+
+        // Listen for the Reset Filter button click
+        var resetFilterButton = document.querySelector('[name="reset_filter"]');
+        resetFilterButton.addEventListener('click', function () {
+            // Reset min and max price values to empty when the button is clicked
+            minPriceInput.value = '';
+            maxPriceInput.value = '';
+
+            // Automatically submit the form to trigger the filtering process
+            filterForm.submit();
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        var shopFilterForm = document.getElementById('shopFilterForm');
+        var resetShopFilterButton = document.getElementById('resetShopFilter');
+        var selectedShop = document.getElementById('selected_shop');
+
+        // Listen for the Reset Shop Filter button click
+        resetShopFilterButton.addEventListener('click', function () {
+            // Reset the selected shop value to the default option
+            selectedShop.value = '';
+
+            // Automatically submit the form to trigger the filtering process
+            shopFilterForm.submit();
+        });
+    });
+</script>
+
 </body>
 </html>
                     
