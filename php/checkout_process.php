@@ -36,6 +36,30 @@ if (isset($_POST['unique_id'], $_POST['orderProducts'], $_POST['ref_id']) && is_
                         echo "Error deleting product from the cart: " . mysqli_error($conn) . "\n";
                     }
 
+                    // Update product quantity in the products table
+                    $update_quantity_query = "UPDATE products SET quantity = quantity - '$quantity' WHERE product_id = '$product_id'";
+                    if (!mysqli_query($conn, $update_quantity_query)) {
+                        echo "Error updating product quantity: " . mysqli_error($conn) . "\n";
+                    } else {
+                        // Check if the quantity has reached zero
+                        $check_quantity_query = "SELECT quantity FROM products WHERE product_id = '$product_id'";
+                        $result_quantity = mysqli_query($conn, $check_quantity_query);
+
+                        if ($result_quantity && $row_quantity = mysqli_fetch_assoc($result_quantity)) {
+                            $remaining_quantity = $row_quantity['quantity'];
+
+                            if ($remaining_quantity == 0) {
+                                // Update product status to 'Out of stock'
+                                $update_status_query = "UPDATE products SET status = 'Out of stock' WHERE product_id = '$product_id'";
+                                if (!mysqli_query($conn, $update_status_query)) {
+                                    echo "Error updating product status: " . mysqli_error($conn) . "\n";
+                                }
+                            }
+                        } else {
+                            echo "Error checking remaining product quantity: " . mysqli_error($conn) . "\n";
+                        }
+                    }
+
                     echo "Order placed successfully.";
                 } else {
                     echo "Error inserting order into the database: " . mysqli_error($conn) . "\n";
