@@ -35,7 +35,7 @@
                     <input type="number" name="otp3" class="otp_field" placeholder="0" min="0" max="9" required onpaste="false">
                     <input type="number" name="otp4" class="otp_field" placeholder="0" min="0" max="9" required onpaste="false">
                 </div>
-                <p>Didn't Recieve a Code or Invalid Code?</p>
+               
                 <input type="radio" name="user_type" id="users" value="users" style="display: none;" checked>
                 <div class="field button">
                     <input type="submit" name="submit" value="Enter">
