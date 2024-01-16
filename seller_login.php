@@ -22,7 +22,7 @@
             <form action="#" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <div class="error-text"></div>
                 <input type="hidden" name="email">
-                <input type="radio" name="user_type" id="seller" value="seller" style="display: none;" checked>
+                
                 <div class="field input">
                     <label>Username</label>
                     <input type="text" name="username" placeholder="Enter your Username" required>
@@ -35,6 +35,7 @@
                 <div class="field button">
                     <input type="submit" name="submit" value="Login">
                 </div>
+                <input type="radio" name="user_type" id="seller" value="seller" style="display: none;" checked>
             </form>
             <div class="link">Not yet signed up? <a href="seller_register.php?">Signup now</a></div>
         </section>
