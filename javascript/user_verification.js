@@ -39,10 +39,10 @@ continueBtn.onclick = () => {
                 let data = xhr.response;
                 if (data === 'success') {
                     if (userType === 'users') {
-                        location.href = './index.php';
+                        location.href = './home.php';
                     } 
                     else if (userType === 'seller') {
-                        location.href = './seller_login.php';
+                        location.href = './seller_dashboard.php';
                     } 
                 } 
                 else {

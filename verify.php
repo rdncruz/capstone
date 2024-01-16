@@ -7,8 +7,15 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>User Verify</title>
+    <title>Seller Verify</title>
     <link rel="stylesheet" href="css/logreg.css">
+    <style>
+        /* Add a CSS style for the clickable label */
+        #resendLabel {
+            color: blue; /* Initial color */
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body data-user-type="users">
     <div class="background">
@@ -17,18 +24,18 @@
     </div>
     <div class="wrapper">
         <div class="form" style="text-align: center;">
-            <h2>Verify Your Account</h2>
-            <p>We emailed you the four digit otp code to Enter the code below to confirm your email address..</p>
-            <form action="" autocomplete="off">
+            <h2>OTP Verification</h2>
+            <p>We take the security of your account seriously. To ensure the safety of your account, Please check your Email for Verication Code.</p>
+            
+            <form action="php/otp.php" method="post" autocomplete="off">
                 <div class="error-text">Error</div>
-                <input type="hidden" name="otp">
                 <div class="fields-input">
-                    
                     <input type="number" name="otp1" class="otp_field" placeholder="0" min="0" max="9" required onpaste="false">
                     <input type="number" name="otp2" class="otp_field" placeholder="0" min="0" max="9" required onpaste="false">
                     <input type="number" name="otp3" class="otp_field" placeholder="0" min="0" max="9" required onpaste="false">
                     <input type="number" name="otp4" class="otp_field" placeholder="0" min="0" max="9" required onpaste="false">
                 </div>
+                <p>Didn't Recieve a Code or Invalid Code?</p>
                 <input type="radio" name="user_type" id="users" value="users" style="display: none;" checked>
                 <div class="field button">
                     <input type="submit" name="submit" value="Enter">
@@ -37,5 +44,6 @@
         </div>
     </div>
     <script src="javascript/user_verification.js"></script>
+   
 </body>
 </html>
