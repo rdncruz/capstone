@@ -23,7 +23,7 @@ continueBtn.onclick = ()=>{
                   location.href = './seller_verify.php';
               } 
               else if (userType === 'admin') {
-                location.href = './admin_verify.php';
+                location.href = './admin_portal.php';
             } 
             }else{
               errorText.style.display = "block";
