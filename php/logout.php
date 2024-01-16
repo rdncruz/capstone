@@ -24,7 +24,7 @@ if (isset($_SESSION['unique_id'])) {
         }
     } else {
         // Redirect admin users and users with no role to the appropriate page
-        header("location: ../users.php");
+        header("location: ../index.php");
     }
 } else {
     header("location: ../login.php");
