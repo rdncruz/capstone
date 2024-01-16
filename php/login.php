@@ -51,8 +51,12 @@
                     $otp = mt_rand(1111, 9999);
                     $status = "Active now";
                     if ($row['role'] === 'seller' && $row['verification_status'] === 'Not Verified') {
-                        echo "error|not_verified_seller";
-                        exit;
+                        echo '<script>
+                                swal("You\'ve been registered!", "Please Wait for the admin to send the OTP Verification", "success")
+                                    .then(() => {
+                                        window.location.href = "./seller_login.php";
+                                    });
+                            </script>';
                     }
                     $sql2 = mysqli_query($conn, "UPDATE users SET otp = '{$otp}', status = '{$status}' WHERE unique_id = {$row['unique_id']}");
                     if($sql2){
