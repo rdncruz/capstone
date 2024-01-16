@@ -8,7 +8,7 @@ form.onsubmit = (e)=>{
 
 continueBtn.onclick = ()=>{
   const userType = document.body.dataset.userType || '';
-  if (userType === 'user' || userType === 'seller' || userType === 'admin') {
+  if (userType === 'user' || userType === 'seller' || userType === 'admins') {
   let xhr = new XMLHttpRequest();
   xhr.open("POST", "php/login.php", true);
   xhr.onload = ()=>{
@@ -22,8 +22,8 @@ continueBtn.onclick = ()=>{
               else if (userType === 'seller') {
                   location.href = './seller_verify.php';
               } 
-              else if (userType === 'admin') {
-                location.href = './admin_verication.php';
+              else if (userType === 'admins') {
+                location.href = './admin_verify.php';
             } 
             }else{
               errorText.style.display = "block";
