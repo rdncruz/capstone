@@ -5,10 +5,10 @@ if (isset($_SESSION['unique_id'])) {
     $logout_id = mysqli_real_escape_string($conn, $_GET['logout_id']);
 
     // Check if the user is not an admin
-    $user_id = $_SESSION['unique_id'];
+   
     $admin_role = "admin"; // Change this to the actual role for admin users
 
-    $check_admin_query = mysqli_query($conn, "SELECT * FROM Role WHERE user_id = {$user_id} AND role = '{$admin_role}'");
+    $check_admin_query = mysqli_query($conn, "SELECT * FROM Role WHERE unique_id = {$logout_id} AND role = '{$admin_role}'");
     
     if ($check_admin_query && mysqli_num_rows($check_admin_query) == 0 && isset($logout_id)) {
         $status = "Offline now";
