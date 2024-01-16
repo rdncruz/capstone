@@ -17,8 +17,8 @@
     </div>
     <div class="wrapper">
         <div class="form" style="text-align: center;">
-            <h2>Verify Your Account</h2>
-            <p>We emailed you the four digit otp code to Enter the code below to confirm your email address..</p>
+            <h2>OTP Verification</h2>
+            <p>We take the security of your account seriously. To ensure the safety of your account, Please check your Email for Verication Code.</p>
             <form action="" autocomplete="off">
             <input type="hidden" name="otp">
                 <div class="error-text">Error</div>
