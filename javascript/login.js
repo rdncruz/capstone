@@ -17,10 +17,10 @@ continueBtn.onclick = ()=>{
             let data = xhr.response;
             if(data === "success"){
               if (userType === 'user') {
-                location.href = './home.php';
+                location.href = './verify.php';
               } 
               else if (userType === 'seller') {
-                  location.href = './seller_dashboard.php';
+                  location.href = './seller_verify.php';
               } 
               else if (userType === 'admin') {
                 location.href = './admin_portal.php';
