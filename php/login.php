@@ -50,7 +50,10 @@
                 if($user_pass === $enc_pass){
                     $otp = mt_rand(1111, 9999);
                     $status = "Active now";
-                   
+                    if ($row['role'] === 'seller' && $row['verification_status'] === 'Not Verified') {
+                        echo "error|not_verified_seller";
+                        exit;
+                    }
                     $sql2 = mysqli_query($conn, "UPDATE users SET otp = '{$otp}', status = '{$status}' WHERE unique_id = {$row['unique_id']}");
                     if($sql2){
                         $_SESSION['unique_id'] = $row['unique_id'];
@@ -78,7 +81,7 @@
                             //Content
                             $mail->isHTML(true);                                  //Set email format to HTML
                             $mail->Subject = 'Efishing Account Verification';
-                            $mail->Body    = 'OTP Verication Code: '. $otp;
+                            $mail->Body    = 'OTP Verification Code: '. $otp;
                         
                         
                             $mail->send();
