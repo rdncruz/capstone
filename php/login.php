@@ -50,15 +50,10 @@
                 if($user_pass === $enc_pass){
                     $otp = mt_rand(1111, 9999);
                     $status = "Active now";
-                    if ($row['role'] === 'seller' && $row['verification_status'] === 'Not Verified') { ?>
-                        <script>
-                            swal("You've been registered!", "Please wait for the admin to send the OTP Verification", "errorss")
-                                .then(() => {
-                                    window.location.href = "./seller_login.php";
-                                });
-                        </script>
-                    <?php } ?>
-                    <?php
+                    if ($row['role'] === 'seller' && $row['verification_status'] === 'Not Verified') {
+                        echo "Sorry Please wait to be Verified";
+                        exit;
+                    }
                     $sql2 = mysqli_query($conn, "UPDATE users SET otp = '{$otp}', status = '{$status}' WHERE unique_id = {$row['unique_id']}");
                     if($sql2){
                         $_SESSION['unique_id'] = $row['unique_id'];
