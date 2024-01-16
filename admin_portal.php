@@ -12,10 +12,11 @@
     if (mysqli_num_rows($sql) > 0) {
         $row = mysqli_fetch_assoc($sql);
         if($row) {
+            $_SESSION['verification_status'] = $row ['verification_status'];
             if ($row['role'] === 'admin') {
-             
+                if($row['verification_status'] != 'Verified') {
                     header("Location: verify.php");
-                
+                }
             } 
             else {
                 // Redirect to login.php if the user is not a seller
