@@ -40,6 +40,7 @@
             <div class="link">Not yet signed up? <a href="seller_register.php?">Signup now</a></div>
         </section>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="javascript/pass-show-hide.js"></script>
     <script src="javascript/login.js"></script>
     <script>
