@@ -29,7 +29,7 @@ continueBtn.onclick = () => {
 
     const userType = document.body.dataset.userType || '';
 
-    if (userType === 'users' || userType === 'seller') {
+    if (userType === 'users' || userType === 'seller' || userType === 'admin') {
     // Start AJAX
     let xhr = new XMLHttpRequest();
     xhr.open('POST', './php/otp.php', true);
@@ -43,6 +43,9 @@ continueBtn.onclick = () => {
                     } 
                     else if (userType === 'seller') {
                         location.href = './seller_dashboard.php';
+                    } 
+                    else if (userType === 'admin') {
+                        location.href = './admin_portal.php';
                     } 
                 } 
                 else {
