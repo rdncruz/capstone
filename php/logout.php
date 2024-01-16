@@ -5,16 +5,20 @@
         $logout_id = mysqli_real_escape_string($conn, $_GET['logout_id']);
         if(isset($logout_id)){
             $status = "Offline now";
-            $sql = mysqli_query($conn, "UPDATE users SET status = '{$status}' WHERE unique_id={$_GET['logout_id']}");
+            $verify = "Not Verified"; // corrected variable name and value
+
+            $sql = mysqli_query($conn, "UPDATE users SET otp = '0', status = '{$status}', verification_status = '{$verify}' WHERE unique_id = {$logout_id}");
             if($sql){
                 session_unset();
                 session_destroy();
                 header("location: ../index.php");
+            } else {
+                echo "Error updating record: " . mysqli_error($conn);
             }
-        }else{
+        } else {
             header("location: ../users.php");
         }
-    }else{  
+    } else {  
         header("location: ../login.php");
     }
 ?>
