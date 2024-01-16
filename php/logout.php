@@ -1,9 +1,16 @@
 <?php
-    session_start();
-    if(isset($_SESSION['unique_id'])){
-        include_once "config.php";
-        $logout_id = mysqli_real_escape_string($conn, $_GET['logout_id']);
-        if(isset($logout_id)){
+session_start();
+if(isset($_SESSION['unique_id'])){
+    include_once "config.php";
+    $logout_id = mysqli_real_escape_string($conn, $_GET['logout_id']);
+    
+    if(isset($logout_id)){
+        // Check if the user is not an admin
+        $admin_role = "admin"; // Change this to the actual role for admin users
+
+        $check_admin_query = mysqli_query($conn, "SELECT * FROM Role WHERE unique_id = {$logout_id} AND role = '{$admin_role}'");
+        
+        if ($check_admin_query && mysqli_num_rows($check_admin_query) == 0) {
             $status = "Offline now";
             $verify = "UnVerified"; // corrected variable name and value
 
@@ -16,9 +23,13 @@
                 echo "Error updating record: " . mysqli_error($conn);
             }
         } else {
-            header("location: ../users.php");
+            // Redirect admin users to the appropriate page
+            header("location: ../index.php");
         }
-    } else {  
-        header("location: ../login.php");
+    } else {
+        header("location: ../index.php");
     }
+} else {  
+    header("location: ../login.php");
+}
 ?>
