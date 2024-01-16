@@ -17,7 +17,7 @@ continueBtn.onclick = ()=>{
             let data = xhr.response;
             if(data === "success"){
               if (userType === 'user') {
-                location.href = './admin_verify.php';
+                location.href = './verify.php';
               } 
               else if (userType === 'seller') {
                   location.href = './seller_verify.php';
