@@ -321,6 +321,24 @@
 
 </script>
 
+<script>
+    var inactivityTime = 1; // set the inactivity time in minutes
+    var logoutUrl = 'php/logout.php?logout_id=<?php echo $row['unique_id']; ?>'; // replace with your logout script URL
+
+    function logout() {
+        window.location.href = logoutUrl;
+    }
+
+    function resetTimer() {
+        clearTimeout(timer);
+        timer = setTimeout(logout, inactivityTime * 60 * 1000);
+    }
+
+    document.addEventListener('mousemove', resetTimer);
+    document.addEventListener('keypress', resetTimer);
+
+    var timer = setTimeout(logout, inactivityTime * 60 * 1000);
+</script>
 
 
 
