@@ -31,13 +31,12 @@ if (isset($_POST['unique_id']) && isset($_POST['action'])) {
         // Perform the approval operation in your database
             // Seller approved successfully
             // Retrieve the OTP from the database
-            $otpQuery = "SELECT otp FROM users WHERE unique_id = '$unique_id'";
-            $otpResult = mysqli_query($conn, $otpQuery);
+          
+            $verificationStatus = "UnVerified";
+            $updateQuery = "UPDATE users SET verification_status = '$verificationStatus' WHERE unique_id = '$unique_id'";
+            $updateResult = mysqli_query($conn, $updateQuery);
 
-            if ($otpResult && mysqli_num_rows($otpResult) > 0) {
-                $row = mysqli_fetch_assoc($otpResult);
-                $otp = $row['otp'];
-
+            if ($updateResult) {
                 // Retrieve the email address of the seller
                 $emailQuery = "SELECT email FROM users WHERE unique_id = '$unique_id'";
                 $emailResult = mysqli_query($conn, $emailQuery);
@@ -72,7 +71,7 @@ if (isset($_POST['unique_id']) && isset($_POST['action'])) {
                                                                     //Content
                                                                     $mail->isHTML(true);                                  //Set email format to HTML
                                                                     $mail->Subject = 'Efishing Account Verification';
-                                                                    $mail->Body    = 'OTP Verication Code: '. $otp;
+                                                                    $mail->Body    = 'You are now Verified you can now login';
                                                                
                                                                 
                                                                     $mail->send();

@@ -18,6 +18,7 @@
     $lng = mysqli_real_escape_string($conn, $_POST['lng']);
     $encrypt_pass = md5($password);
     $verification_status = 'Not Verified';
+    
     $status = "Offline";
     $ran_id = 0;
     $userType = isset($_POST['user_type']) ? $_POST['user_type'] : 'user';
