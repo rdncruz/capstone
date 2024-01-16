@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/logreg.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 </head>
-<body data-user-type="admins">
+<body data-user-type="admin">
     <div class="wrapper">
         <section class="form login">
             <header>Administrator</header>
@@ -28,7 +28,7 @@
                     <input type="password" name="password" placeholder="Enter your password" required>
                     <i class="fas fa-eye"></i>
                 </div>
-                <input type="radio" name="user_type" id="admins" value="admins" style="display: none;" checked>
+                <input type="radio" name="user_type" id="admin" value="admin" style="display: none;" checked>
                 <div class="field button">
                     <input type="submit" name="submit" value="Login">
                 </div>
