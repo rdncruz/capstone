@@ -8,6 +8,7 @@ form.onsubmit = (e)=>{
 
 continueBtn.onclick = ()=>{
   const userType = document.body.dataset.userType || '';
+  console.log("userType:", userType);
   if (userType === 'user' || userType === 'seller' || userType === 'admin') {
   let xhr = new XMLHttpRequest();
   xhr.open("POST", "php/login.php", true);
