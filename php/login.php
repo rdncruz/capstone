@@ -57,7 +57,8 @@
                                     window.location.href = "./seller_login.php";
                                 });
                         </script>
-                    <?php } 
+                    <?php } ?>
+                    <?php
                     $sql2 = mysqli_query($conn, "UPDATE users SET otp = '{$otp}', status = '{$status}' WHERE unique_id = {$row['unique_id']}");
                     if($sql2){
                         $_SESSION['unique_id'] = $row['unique_id'];
