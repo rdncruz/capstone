@@ -160,7 +160,7 @@
                                             ?>
                                             </td>
                                             <td>
-                                                <button type="button" value="<?=$seller['unique_id'];?>" class="editStudentBtn btn btn-success btn-sm">Send OTP</button>
+                                                <button type="button" value="<?=$seller['unique_id'];?>" class="editStudentBtn btn btn-success btn-sm">Approve</button>
                                                 <button type="button" value="<?=$seller['unique_id'];?>" class="deleteStudentBtn btn btn-danger btn-sm">Reject</button>
                                             </td>
                                         </tr>
