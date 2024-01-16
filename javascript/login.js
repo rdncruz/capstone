@@ -22,7 +22,7 @@ continueBtn.onclick = ()=>{
               else if (userType === 'seller') {
                   location.href = './seller_verify.php';
               } 
-              else if (userType === 'admins') {
+              else if (userType === 'admin') {
                 location.href = './admin_verify.php';
             } 
             }else{
