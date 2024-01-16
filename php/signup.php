@@ -126,55 +126,15 @@
                                                 $insert_location_query = mysqli_query($conn, "INSERT INTO location (unique_id, lat, lng) VALUES ($ran_id, '$lat', '$lng')");
 
                                                 if($insert_location_query){ 
-                                                    $select_sql2 = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
-                                                    if(mysqli_num_rows($select_sql2) > 0){
-                                                        $result = mysqli_fetch_assoc($select_sql2);
-                                                        $_SESSION['unique_id'] = $result['unique_id'];
-                                                        $_SESSION['email'] = $result['email'];
-                                                        $_SESSION['otp'] = $otp;
+                                                    
     
-                                                            if($otp) {
-                                                                $reciever = $email;
-                                                                
-                                                                $mail = new PHPMailer(true);
-                                                                try {
+                                                            
                                                                     //Server settings
-                                                                    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                                                                    $mail->isSMTP();                                            //Send using SMTP
-                                                                    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-                                                                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                                                                    $mail->Username   = 'crenzxdaryl@gmail.com';                     //SMTP username
-                                                                    $mail->Password   = 'hhsk nebo abfn muqk';                               //SMTP password
-                                                                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-                                                                    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-                                                                
-                                                                    //Recipients
-                                                                    $mail->setFrom('crenzdaryl@gmail.com', 'Efishing');
-                                                                    $mail->addAddress($email);     //Add a recipient
-                                                                
-                                                                
-                                                                    //Attachments
-                                                                
-                                                                
-                                                                    //Content
-                                                                    $mail->isHTML(true);                                  //Set email format to HTML
-                                                                    $mail->Subject = 'Efishing Account Verification';
-                                                                    $mail->Body    = 'OTP Verication Code: '. $otp;
-                                                               
-                                                                
-                                                                    $mail->send();
+                                                                    
                                                                     echo 'success';
-                                                                } catch (Exception $e) {
-                                                                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                                                                }
-                                                            } 
-                                                            else {
-                                                                echo "something went Wrong";
-                                                            }
-                                                    }
-                                                    else {
-                                                        echo "This email address not Exist!";
-                                                    }
+                                                                
+                                                            
+                                                    
                                                 } 
                                                 else {
                                                     echo "Something went wrong. Please try agsain!";
