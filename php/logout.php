@@ -24,6 +24,8 @@ if (isset($_SESSION['unique_id'])) {
         }
     } else {
         // Redirect admin users and users with no role to the appropriate page
+        session_unset();
+        session_destroy();
         header("location: ../index.php");
     }
 } else {
