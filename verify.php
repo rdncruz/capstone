@@ -1,3 +1,10 @@
+<?php
+ session_start();
+
+ 
+ $_SESSION['otp_expiration']
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
