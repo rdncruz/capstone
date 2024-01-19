@@ -22,6 +22,10 @@
                     $otp = mt_rand(1111, 9999);
                     $status = "Active now";
                     $verify = "Verified";
+                    $expiration_time = time() + (1 * 60);
+
+                    $_SESSION['otp'] = $otp;
+                    $_SESSION['otp_expiration'] = $expiration_time;
                     $sql2 = mysqli_query($conn, "UPDATE users SET otp = '{$otp}', status = '{$status}' WHERE unique_id = {$row['unique_id']}");
                     if($sql2){
                         $_SESSION['unique_id'] = $row['unique_id'];
