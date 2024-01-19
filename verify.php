@@ -56,6 +56,7 @@
     <script>
         // Countdown timer logic
         var countdownElement = document.getElementById('countdown');
+        var resendLabelElement = document.getElementById('resendLabel');
         var timeRemaining = 60; // 1 minute in seconds
 
         function updateCountdown() {
@@ -69,8 +70,8 @@
                 timeRemaining--;
                 setTimeout(updateCountdown, 1000); // Update every second
             } else {
-                countdownElement.textContent = "Expired";
-                // Optionally, you can add logic to handle expiration (e.g., disable the submit button)
+                countdownElement.style.display = "none"; // Hide the countdown
+                resendLabelElement.style.display = "block"; // Show the resend label
             }
         }
         function resendCode() {
