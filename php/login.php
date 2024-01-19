@@ -95,6 +95,7 @@
                                     });
                             </script>';
                     }
+                    $_SESSION['username'] = $username;
                     $_SESSION['otp'] = $otp;
                     $_SESSION['otp_expiration'] = $expiration_time;
                     $sql2 = mysqli_query($conn, "UPDATE users SET otp = '{$otp}', status = '{$status}' WHERE unique_id = {$row['unique_id']}");
