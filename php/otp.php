@@ -15,27 +15,29 @@ if (!empty($otp)) {
     if (isset($_SESSION['otp']) && isset($_SESSION['otp_expiration']) && $_SESSION['otp_expiration'] > time()) {
         $session_otp = $_SESSION['otp'];
 
-        if ($otp === $session_otp) {
-            $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = '{$unique_id}' AND otp = '{$otp}'");
-            if (mysqli_num_rows($sql) > 0) {
-                $null_otp = 0; // Set the OTP value to 0 to indicate a verified user
-                $sql2 = mysqli_query($conn, "UPDATE users SET `verification_status` = 'Verified', `otp` = '$null_otp' WHERE unique_id = '{$unique_id}'");
-                if ($sql2) {
-                    $row = mysqli_fetch_assoc($sql);
-                    if ($row) {
-                        $_SESSION['unique_id'] = $row['unique_id'];
-                        $_SESSION['verification_status'] = $row['verification_status'];
-                        echo "success";
-                    }
+        // Check if the entered OTP matches the one stored in the database
+        $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = '{$unique_id}' AND otp = '{$session_otp}'");
+        if (mysqli_num_rows($sql) > 0) {
+            $null_otp = 0; // Set the OTP value to 0 to indicate a verified user
+            $sql2 = mysqli_query($conn, "UPDATE users SET `verification_status` = 'Verified', `otp` = '$null_otp' WHERE unique_id = '{$unique_id}'");
+            if ($sql2) {
+                $row = mysqli_fetch_assoc($sql);
+                if ($row) {
+                    $_SESSION['unique_id'] = $row['unique_id'];
+                    $_SESSION['verification_status'] = $row['verification_status'];
+                    echo "success";
                 }
-            } else {
-                echo "Wrong Otp!";
             }
         } else {
             echo "Wrong Otp!";
         }
     } else {
-        echo "Expired Otp!";
+        // Check if the OTP has expired
+        if (isset($_SESSION['otp_expiration']) && $_SESSION['otp_expiration'] <= time()) {
+            echo "Expired Otp!";
+        } else {
+            echo "Invalid Otp!";
+        }
     }
 } else {
     echo "Enter Otp!";
