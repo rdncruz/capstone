@@ -2,6 +2,7 @@
  session_start();
  
  $_SESSION['otp'];
+ $_SESSION['username'];
  $_SESSION['otp_expiration'];
 ?>
 <!DOCTYPE html>
@@ -37,6 +38,7 @@
                 <input type="radio" name="user_type" id="admin" value="admin" style="display: none;" checked>
                 <p>Didn't Recieve a Code or Invalid Code?</p>
                 <div id="countdown">1:00</div>
+                <div id="resendLabel" style="display: none;" onclick="resendCode()">Resend</div>
                 <div class="field button">
                     <input type="submit" name="submit" value="Enter">
                 </div>
@@ -63,6 +65,35 @@
                 countdownElement.textContent = "Expired";
                 // Optionally, you can add logic to handle expiration (e.g., disable the submit button)
             }
+        }
+        function resendCode() {
+            // Reset the timer and perform any necessary actions for resending the code
+            timeRemaining = 60;
+            countdownElement.style.display = "block"; // Show the countdown
+            resendLabelElement.style.display = "none"; // Hide the resend label
+            updateCountdown();
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', './php/resend_otp.php', true);
+            xhr.onload = () => {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        let data = xhr.response;
+                        if (data === 'success') {
+                            // Handle success, for example, display a message or update UI
+                            console.log('Resend successful!');
+                        } else {
+                            // Handle errors, for example, display an error message
+                            console.error('Resend failed:', data);
+                        }
+                    }
+                }
+            };
+
+            // Send data through AJAX to PHP
+            let formData = new FormData(form);
+            xhr.send(formData);
+            
+            // Additional logic for resending the code goes here
         }
 
         // Start the countdown when the page loads
