@@ -43,10 +43,10 @@ continueBtn.onclick = () => {
                     } 
                     else if (userType === 'seller') {
                         location.href = './seller_dashboard.php';
-                    } 
+                    }
                     else if (userType === 'admin') {
                         location.href = './admin_portal.php';
-                    } 
+                    }  
                 } 
                 else {
                     errortxt.textContent = data;
