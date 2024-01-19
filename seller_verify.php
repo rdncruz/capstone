@@ -2,7 +2,7 @@
  session_start();
  
  $_SESSION['otp'];
- $_SESSION['otp_expiration']
+ $_SESSION['otp_expiration'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
