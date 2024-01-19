@@ -15,7 +15,7 @@
             $_SESSION['verification_status'] = $row ['verification_status'];
             if ($row['role'] === 'admin') {
                 if($row['verification_status'] != 'Verified') {
-                    header("Location: verify.php");
+                    header("Location: admin_verify.php");
                 }
             } 
             else {
