@@ -35,6 +35,8 @@
                     <input type="number" name="otp4" class="otp_field" placeholder="0" min="0" max="9" required onpaste="false">
                 </div>
                 <input type="radio" name="user_type" id="admin" value="admin" style="display: none;" checked>
+                <p>Didn't Recieve a Code or Invalid Code?</p>
+                <div id="countdown">1:00</div>
                 <div class="field button">
                     <input type="submit" name="submit" value="Enter">
                 </div>
@@ -42,5 +44,29 @@
         </div>
     </div>
     <script src="javascript/user_verification.js"></script>
+    <script>
+        // Countdown timer logic
+        var countdownElement = document.getElementById('countdown');
+        var timeRemaining = 60; // 1 minute in seconds
+
+        function updateCountdown() {
+            var minutes = Math.floor(timeRemaining / 60);
+            var seconds = timeRemaining % 60;
+
+            // Display the countdown in MM:SS format
+            countdownElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                setTimeout(updateCountdown, 1000); // Update every second
+            } else {
+                countdownElement.textContent = "Expired";
+                // Optionally, you can add logic to handle expiration (e.g., disable the submit button)
+            }
+        }
+
+        // Start the countdown when the page loads
+        updateCountdown();
+    </script>
 </body>
 </html>
