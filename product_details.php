@@ -232,9 +232,10 @@ if (isset($fetch_product)) {
                                    
                                 </div>
                                 <small class="pt-1">(<?php echo $rating_info['review_count']; ?> Review)</small>
-                                <p class="mb-4"><?php echo $fetch_product['small_description']; ?></p>
+                               
                                 
                             </div>
+                            <p class="mb-4"><?php echo $fetch_product['small_description']; ?></p>
                             <h3 class="font-weight-semi-bold mb-4">₱ <?php echo $fetch_product['price']; ?></h3>
                             <h5>Quantity: <?php echo $fetch_product['quantity']; ?></h5>
 
