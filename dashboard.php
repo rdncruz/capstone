@@ -250,7 +250,7 @@
                                 </div>
                                 
                                 <div class="text-center mt-4"> 
-                                    <button id="submitRatingBtn" class="btn btn-success send px-5">submit_rating <i class="fa fa-long-arrow-right ml-1"></i></button>
+                                    <button id="submitRatingBtn" class="btn btn-success send px-5">Submit Rating <i class="fa fa-long-arrow-right ml-1"></i></button>
                                 </div>
                             </div>
                         </div>
