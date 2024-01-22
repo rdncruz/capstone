@@ -148,7 +148,7 @@
                     <input type="text" name="name" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="">Small_Description</label>
+                    <label for="">Description</label>
                     <input type="text" name="small_description" class="form-control" />
                 </div>
                 <div class="mb-3">
@@ -165,7 +165,7 @@
                     <input type="text" name="quantity" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="status">Category</label>
+                    <label for="status">Status</label>
                     <select name="status" class="form-control">
                         <option value="In Stock">In Stock</option>
                         <option value="Out of Stock">Out of Stock</option>
@@ -205,7 +205,7 @@
                     <input type="text" name="name" id="name" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="">Small_description</label>
+                    <label for="">Description</label>
                     <input type="text" name="small_description" id="small_description" class="form-control" />
                 </div>
                 <div class="mb-3">
@@ -249,7 +249,7 @@
                     <p id="view_name" class="form-control"></p>
                 </div>
                 <div class="mb-3">
-                    <label for="">Small_description</label>
+                    <label for="">Description</label>
                     <p id="view_small_description" class="form-control"></p>
                 </div>
                 <div class="mb-3">
