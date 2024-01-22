@@ -88,12 +88,9 @@
                     $status = "Active now";
                     $expiration_time = time() + (1 * 60);
                     if ($row['role'] === 'seller' && $row['verification_status'] === 'Not Verified') {
-                        echo '<script>
-                                swal("You\'ve been registered!", "Please Wait for the admin to send the OTP Verification", "success")
-                                    .then(() => {
-                                        window.location.href = "./seller_login.php";
-                                    });
-                            </script>';
+                        echo 'Please Wait for the admin to send the OTP Verification';
+                                    
+                          
                     }
                     $_SESSION['username'] = $username;
                     $_SESSION['otp'] = $otp;
