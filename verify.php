@@ -80,6 +80,7 @@
             countdownElement.style.display = "block"; // Show the countdown
             resendLabelElement.style.display = "none"; // Hide the resend label
             updateCountdown();
+            location.reload();
             let xhr = new XMLHttpRequest();
             xhr.open('POST', './php/resend_otp.php', true);
             xhr.onload = () => {
@@ -89,7 +90,7 @@
                         if (data === 'success') {
                             // Handle success, for example, display a message or update UI
                             console.log('Resend successful!');
-                            location.reload();
+                            
                         } else {
                             // Handle errors, for example, display an error message
                             console.error('Resend failed:', data);
