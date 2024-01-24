@@ -122,7 +122,7 @@ if (isset($fetch_product)) {
     <section id="sidebar">
         <a href="#" class="logo">
             <i class='bx bxs-store'></i>
-            <span class="text"></span>
+            <span class="text"><?php echo $row['username']; ?></span>
         </a>
         <ul class="sidebar-menu">
             <li>

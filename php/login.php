@@ -86,7 +86,7 @@
                 if($user_pass === $enc_pass){
                     $otp = mt_rand(1111, 9999);
                     $status = "Active now";
-                    $expiration_time = time() + (1 * 10);
+                    $expiration_time = time() + (1 * 60);
                     if ($row['role'] === 'seller' && $row['verification_status'] === 'Not Verified') {
                         echo 'Please Wait for the admin to send the OTP Verification';
                                     
