@@ -57,7 +57,7 @@
         // Countdown timer logic
         var countdownElement = document.getElementById('countdown');
         var resendLabelElement = document.getElementById('resendLabel');
-        var timeRemaining = 10; // 1 minute in seconds
+        var timeRemaining = 60; // 1 minute in seconds
 
         function updateCountdown() {
             var minutes = Math.floor(timeRemaining / 60);
@@ -89,6 +89,7 @@
                         if (data === 'success') {
                             // Handle success, for example, display a message or update UI
                             console.log('Resend successful!');
+                            location.reload();
                         } else {
                             // Handle errors, for example, display an error message
                             console.error('Resend failed:', data);
