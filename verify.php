@@ -57,7 +57,7 @@
         // Countdown timer logic
         var countdownElement = document.getElementById('countdown');
         var resendLabelElement = document.getElementById('resendLabel');
-        var timeRemaining = 60; // 1 minute in seconds
+        var timeRemaining = 10; // 1 minute in seconds
 
         function updateCountdown() {
             var minutes = Math.floor(timeRemaining / 60);
