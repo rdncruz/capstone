@@ -37,7 +37,10 @@ if (isset($_POST['unique_id'], $_POST['orderProducts'], $_POST['ref_id']) && is_
                     }
 
                     // Update product quantity in the products table
-                
+                    $update_quantity_query = "UPDATE products SET quantity = quantity - '$quantity' WHERE product_id = '$product_id'";
+                    if (!mysqli_query($conn, $update_quantity_query)) {
+                        echo "Error updating product quantity: " . mysqli_error($conn) . "\n";
+                    } else {
                         // Check if the quantity has reached zero
                         $check_quantity_query = "SELECT quantity FROM products WHERE product_id = '$product_id'";
                         $result_quantity = mysqli_query($conn, $check_quantity_query);
@@ -64,6 +67,9 @@ if (isset($_POST['unique_id'], $_POST['orderProducts'], $_POST['ref_id']) && is_
             } else {
                 echo "Error fetching product price from the database.\n";
             }
+        } else {
+            echo "Error: product_id or quantity key not found in the product array.\n";
+        }
     }
 
     // Close the database connection after the loop
